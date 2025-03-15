@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Inicio | Reserva Restaurante</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Bienvenido a <span class="highlight">CheckAndFood</span></h1>
+      <p>¡Haz tu reserva o administra tu restaurante!</p>
+    </header>
+    
+    <div class="options-container">
+      <div class="option-card usuario">
+        <h2>Si eres Usuario</h2>
+        <p>Haz tu reserva en minutos y disfruta de la mejor comida.</p>
+        <button class="btn-user">Entrar como Usuario</button>
+      </div>
+
+      <div class="option-card restaurante">
+        <h2>Si eres un Restaurante</h2>
+        <p>Administra tus reservas y gestioná tu restaurante fácilmente.</p>
+        <button class="btn-restaurant">Entrar como Restaurante</button>
+      </div>
+    </div>
+    <div class="social-icons">
+        <div class="social-icon">
+          <a href="https://facebook.com" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <div class="social-icon">
+          <a href="https://twitter.com" target="_blank">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+        <div class="social-icon">
+          <a href="https://instagram.com" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+    <p class="social-text">¡Síguenos en nuestras redes sociales!</p>
+  </div>
+  <!-- Footer -->
+<footer>
+    <p>&copy; 2025 CheckAndFood | <a href="#">Términos de Uso</a> | <a href="#">Política de Privacidad</a></p>
+  </footer>
+</body>
+</html>

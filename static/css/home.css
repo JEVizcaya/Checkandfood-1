@@ -1,0 +1,239 @@
+/* Estilo general de la página */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(45deg, #ff0066, #ff6600, #ffcc00, #33cc33, #3399ff);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* No cambiar el contenido verticalmente */
+    min-height: 100vh; /* Hace que la altura mínima sea el 100% de la pantalla */
+  }
+  
+  .container {
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 40px;
+    background-color: rgb(66 195 201 / 90%);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    margin: 40px auto; /* Añadido margen superior para separar del borde superior */
+    flex: 1; /* Esto asegura que el contenedor ocupe el espacio disponible */
+    margin-bottom: 50px; /* Da espacio entre el contenido y el footer */
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Ajustamos el espacio entre los íconos */
+    margin-top: 30px;
+  }
+
+  .social-icon i {
+    max-width: 80%; /* Reducimos el tamaño del icono dentro del círculo */
+    max-height: 80%; /* Reducimos la altura del icono */
+    object-fit: contain; /* Mantener la relación de aspecto del icono */
+  }
+  
+  .social-text {
+    margin-top: 20px;
+    font-size: 1.3em;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .social-text a {
+    color: #ff6347; /* Color vibrante para el texto */
+    text-decoration: none;
+    font-weight: normal;
+  }
+  
+  .social-text a:hover {
+    text-decoration: none;
+  }
+  
+  .header h1 {
+    font-size: 3em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .header p {
+    font-size: 1.4em;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  
+  .highlight {
+    color: #ffffff; /* Color vibrante para el nombre */
+    font-weight: bold;
+  }
+  
+  /* Estilos para las tarjetas de opción */
+  .options-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .option-card {
+    background: linear-gradient(145deg, #7a4fff, #00bcd4); /* Azul y morado */
+    border-radius: 15px;
+    padding: 30px;
+    width: 250px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+  }
+  
+  .option-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .option-card h2 {
+    color: #fff;
+    font-size: 2em;
+    margin-bottom: 15px;
+  }
+  
+  .option-card p {
+    font-size: 1.1em;
+    color: #fff;
+    margin-bottom: 25px;
+    font-weight: 300;
+  }
+  
+  /* Estilo para los botones */
+  button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .btn-user {
+    background-color: #ff6347; /* Rojo-naranja */
+    color: #fff;
+  }
+  
+  .btn-restaurant {
+    background-color: #4caf50; /* Verde */
+    color: #fff;
+  }
+  
+  button:hover {
+    transform: translateY(-5px);
+  }
+  
+  button:active {
+    transform: translateY(2px);
+  }
+  
+  /* Animaciones */
+  @keyframes gradientBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .container {
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  /* Footer */
+  footer {
+    background: linear-gradient(145deg, #00bcd4, #7a4fff); /* Gradiente azul y morado */
+    color: white;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 1.1em;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: auto; /* Esto garantiza que el footer se posicione al final */
+  }
+  
+  footer a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Media Queries para dispositivos móviles */
+  
+  /* Para pantallas de tamaño pequeño (por debajo de 768px) */
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 2.5em;
+    }
+  
+    .header p {
+      font-size: 1.2em;
+    }
+  
+    .options-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .option-card {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .btn-user, .btn-restaurant {
+      font-size: 1.1em;
+    }
+  
+    /* Cambiar tamaño del contenedor para pantallas pequeñas */
+    .container {
+      max-width: 500px; /* Establecer un máximo más pequeño */
+      width: 90%; /* Asegurar que ocupe el 90% del ancho de la pantalla */
+      padding: 20px; /* Reducir el padding vertical para que el contenedor sea más pequeño */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header h1 {
+      font-size: 2.2em;
+    }
+  
+    .option-card {
+      width: 100%;
+      padding: 15px;
+    }
+  
+    .btn-user, .btn-restaurant {
+      font-size: 1em;
+    }
+  
+    /* Para pantallas muy pequeñas, ajustamos aún más el tamaño del contenedor */
+    .container {
+      max-width: 400px; /* Establecer un máximo más pequeño aún */
+      width: 90%;
+      padding: 15px; /* Aseguramos que el padding sea aún más pequeño */
+    }
+  }
+  

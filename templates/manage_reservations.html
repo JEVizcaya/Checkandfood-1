@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión del Restaurante</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_reservations.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>Restaurante {{restaurant_name.name}}</h1>
+        <a href="{{url_for('logout')}}"><button type="submit">Cerrar Sesión</button></a>
+    </header>
+
+    <h2>Capacidad</h2>
+    <input id="capacidad" type="number" name="capacity" value="{{ capacity.capacity }}" readonly>
+
+    <hr>
+
+    <!-- Tabla para ver y gestionar las reservas -->
+    <h1>Reservas</h1>
+    <table >
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Teléfono</th>
+                <th>Fecha</th>
+                <th>Comensales</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr class="{% if reservation.estatus == 'rechazado' %}rechazada{% endif %}">
+                <td>{{ reservation.customer_name }}</td>
+                <td>{{ reservation.phone_number }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.dinner }}</td>
+                <td>{{ reservation.estatus }}</td>
+                <td>
+                    <form id="ops" method="POST">
+                        <input type="hidden" name="reserve_id" value="{{ reservation.reserve_id }}">
+                        <button type="submit" name="action" value="confirm">Confirmar</button>
+                        <button type="submit" name="action" value="reject">Rechazar</button>
+
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+
+</html>
