@@ -17,14 +17,14 @@
     <div class="options-container">
       <div class="option-card usuario">
         <h2>Si eres Usuario</h2>
-        <p>Haz tu reserva en minutos y disfruta de la mejor comida.</p>
-        <button class="btn-user">Entrar como Usuario</button>
+        <p>Haz tu reserva y disfruta de la mejor comida.</p>
+        <a href="{{url_for('login_clientes')}}"><button class="btn-user">Entrar como Usuario</button></a>
       </div>
 
       <div class="option-card restaurante">
         <h2>Si eres un Restaurante</h2>
         <p>Administra tus reservas y gestioná tu restaurante fácilmente.</p>
-        <button class="btn-restaurant">Entrar como Restaurante</button>
+        <a href="{{url_for('restaurantes')}}"><button class="btn-restaurant">Entrar como Restaurante</button></a>
       </div>
     </div>
     <div class="social-icons">

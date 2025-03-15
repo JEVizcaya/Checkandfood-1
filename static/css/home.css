@@ -9,25 +9,31 @@
   body {
     background: linear-gradient(45deg, #ff0066, #ff6600, #ffcc00, #33cc33, #3399ff);
     background-size: 400% 400%;
-    animation: gradientBackground 10s ease infinite;
+    animation: gradientBackground 15s ease infinite;
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* No cambiar el contenido verticalmente */
     min-height: 100vh; /* Hace que la altura mínima sea el 100% de la pantalla */
+    background-image: url(/static/img/home.jpg);
+    background-size: cover; /* La imagen cubre todo el contenedor */
+    background-position: center; /* Centra la imagen en el contenedor */
+    background-attachment: fixed; /* Esto hace que la imagen de fondo se quede fija al hacer scroll */
   }
-  
+
   .container {
     text-align: center;
     max-width: 900px;
     width: 100%;
     padding: 40px;
-    background-color: rgb(66 195 201 / 90%);
+    background-color: rgba(117, 187, 228, 0.7);
     border-radius: 20px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     margin: 40px auto; /* Añadido margen superior para separar del borde superior */
     flex: 1; /* Esto asegura que el contenedor ocupe el espacio disponible */
     margin-bottom: 50px; /* Da espacio entre el contenido y el footer */
   }
+
+  
 
   .social-icons {
     display: flex;
@@ -45,7 +51,8 @@
   .social-text {
     margin-top: 20px;
     font-size: 1.3em;
-    color: #333;
+    font-weight: bold;
+    color:#fffaf0;
     font-weight: bold;
   }
   
@@ -61,18 +68,19 @@
   
   .header h1 {
     font-size: 3em;
-    color: #333;
+    color: #fffaf0;
     margin-bottom: 10px;
   }
   
   .header p {
     font-size: 1.4em;
-    color: #555;
+    font-weight: bold;
+    color:#fffaf0;
     margin-bottom: 40px;
   }
   
   .highlight {
-    color: #ffffff; /* Color vibrante para el nombre */
+    color: #ffd700; /* Color vibrante para el nombre */
     font-weight: bold;
   }
   
@@ -125,12 +133,12 @@
   }
   
   .btn-user {
-    background-color: #ff6347; /* Rojo-naranja */
+    background-color: #4caf50; /* Verde */
     color: #fff;
   }
   
   .btn-restaurant {
-    background-color: #4caf50; /* Verde */
+    background-color: #ff6347; /* Rojo-naranja */
     color: #fff;
   }
   
@@ -185,6 +193,9 @@
   
   /* Para pantallas de tamaño pequeño (por debajo de 768px) */
   @media (max-width: 768px) {
+    body{
+        animation: gradientBackground 120s ease infinite;
+    }
     .header h1 {
       font-size: 2.5em;
     }
@@ -206,6 +217,7 @@
     .btn-user, .btn-restaurant {
       font-size: 1.1em;
     }
+    
   
     /* Cambiar tamaño del contenedor para pantallas pequeñas */
     .container {
@@ -216,6 +228,9 @@
   }
   
   @media (max-width: 480px) {
+    body{
+        animation: gradientBackground 120s ease infinite;
+    }
     .header h1 {
       font-size: 2.2em;
     }
@@ -230,6 +245,9 @@
     }
   
     /* Para pantallas muy pequeñas, ajustamos aún más el tamaño del contenedor */
+    body{
+        animation: gradientBackground 120s ease infinite;
+    }
     .container {
       max-width: 400px; /* Establecer un máximo más pequeño aún */
       width: 90%;
