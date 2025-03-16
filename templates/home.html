@@ -10,19 +10,19 @@
 <body>
   <div class="container">
     <header class="header">
-      <h1>Bienvenido a <span class="highlight">CheckAndFood</span></h1>
+      <h1><span class="highlight">CheckAndFood</span></h1>
       <p>¡Haz tu reserva o administra tu restaurante!</p>
     </header>
     
     <div class="options-container">
       <div class="option-card usuario">
-        <h2>Si eres Usuario</h2>
+        <h2>Usuarios</h2>
         <p>Haz tu reserva y disfruta de la mejor comida.</p>
         <a href="{{url_for('login_clientes')}}"><button class="btn-user">Entrar como Usuario</button></a>
       </div>
 
       <div class="option-card restaurante">
-        <h2>Si eres un Restaurante</h2>
+        <h2>Restaurantes</h2>
         <p>Administra tus reservas y gestiona tu restaurante fácilmente.</p>
         <a href="{{url_for('restaurantes')}}"><button class="btn-restaurant">Entrar como Restaurante</button></a>
       </div>
