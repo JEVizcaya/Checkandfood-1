@@ -1,0 +1,181 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #cba0a0, #d76363); /* Fondo con degradado vibrante */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* Contenedor principal con colores llamativos */
+  .container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background: linear-gradient(145deg, #7a4fff, #00bcd4); /* Azul y morado */
+  }
+  
+  /* Estilo para los formularios */
+  .form-container {
+    text-align: center;
+  }
+
+  h1{
+    color: #f5f5f5;
+  }
+  
+  h2 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #f5f5f5;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  /* Estilo de los campos de input */
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+  
+  .input-group input:focus {
+    outline: none;
+    border-color: #008000; 
+    background-color: #fff;
+  }
+  
+  /* Botón de acción */
+  .btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #4caf50; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #77c00a; /* Rojo más oscuro al pasar el mouse */
+  }
+  .volver{
+    font-size: 16px;
+    color: #f5f5f5;
+    background-color: #1313cc;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  /* Enlaces debajo de los formularios */
+  .signup-link, .login-link {
+    font-size: 14px;
+    color: #f5f5f5;
+    margin-top: 10px;
+  }
+  
+  .signup-link a, .login-link a {
+    text-decoration: none;
+    color: #0000ff; /* Rojo brillante para los enlaces */
+  }
+  
+  .signup-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+    color: #00008b; /* Rojo más oscuro al pasar el mouse */
+  }
+  
+  /* Estilo de animación para el contenedor */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .container {
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  /* Responsividad: tamaños de pantalla pequeños (móviles) */
+@media (max-width: 600px) {
+
+   
+  .container {
+    max-width: 100%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .input-group input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .signup-link, .login-link {
+    font-size: 12px;
+  }
+}
+
+/* Responsividad: tamaños de pantalla medianos (tabletas) */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90%;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .input-group input {
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+}

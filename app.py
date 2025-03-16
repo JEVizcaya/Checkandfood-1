@@ -116,9 +116,9 @@ def registro_clientes():
         email = request.form['email']
         telefono = request.form['telefono']
         password = request.form['password']
-        repetir_password = request.form['repetir_password']
+        confirm_password = request.form['confirm_password']
 
-        if password == repetir_password:
+        if password == confirm_password:
             hashed_password = generate_password_hash(password)
 
             try:
