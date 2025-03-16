@@ -240,10 +240,15 @@ def dashboard():
     
     cursor.execute("SELECT * FROM restaurant")
     restaurantes = cursor.fetchall()
+    customer_id = session['user_id']
+    cursor.execute('''SELECT name FROM customer WHERE customer_id = %s;''', (customer_id,))
+    customer_name = cursor.fetchone()
     cursor.close()
     connection.close()
+    
 
-    return render_template('customer_dashboard.html', restaurantes=restaurantes, reservations=reservations)
+    
+    return render_template('customer_dashboard.html', customer_name=customer_name,restaurantes=restaurantes, reservations=reservations)
 
 
 

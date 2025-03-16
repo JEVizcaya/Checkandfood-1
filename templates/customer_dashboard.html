@@ -4,113 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión del Restaurante</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_reservations.css') }}">
+    <title>Panel de Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
+    <div class="container">
 
     <header>
-        
-        <a href="{{url_for('logout')}}"><button type="submit">Cerrar Sesión</button></a>
+        <a href="{{ url_for('logout') }}"><button type="submit">Cerrar Sesión</button></a>
     </header>
 
+    <main>
+        <h1>Bienvenido, {{ customer_name.name }}</h1>
 
-       <h1>Gestión del CLIENTE</h1>
+        <section class="reservation-form">
+            <h2>Nueva Reserva</h2>
+            <form action="" method="POST">
+                <div class="form-group">
+                    <label for="restaurantes">Restaurante:</label>
+                    <select id="restaurantes" name="restaurante" onchange="mostrarCamposReserva()" required>
+                        <option value="" disabled selected>Seleccione un restaurante</option>
+                        {% for restaurante in restaurantes %}
+                        <option value="{{ restaurante.restaurant_id }}">{{ restaurante.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <div  id="campos-reserva">
+                    <div class="form-group">
+                        <label for="fecha">Franja horaria</label>
+                        <input type="date" name="date" id="date" required>
+                    
+                        <!--select para seleccionar franjas horarias-->
+                        <select id="fecha" name="date" required>
+                            <option value="12:30-13:30">12:30-13:30</option>
+                            <option value="13:30-14:30">13:30-14:30</option>
+                            <option value="14:30-15:30">14:30-15:30</option>
+                            <option value="15:30-16:30">15:30-16:30</option>
+                            <option value="20:30-21:30">20:30-21:30</option>
+                            <option value="21:30-22:30">21:30-22:30</option>
+                            <option value="22:30-23:30">22:30-23:30</option>
+                            
 
-    <hr>
+                        </select>   
+                            
+                    </div>
 
+                    <div class="form-group">
+                        <label for="comensales">Número de Comensales:</label>
+                        <input type="number" id="comensales" name="comensales" min="1" required>
+                    </div>
+                </div>
 
+                <button type="submit">Confirmar Reserva</button>
+                <p class="message">{{ mensaje | safe }}</p>
+            </form>
+        </section>
+
+        <hr>
+
+        <section class="reservations-table">
+            <h2>Mis Reservas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Restaurante</th>
+                        <th>Comensales</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.date }}</td>
+                        <td>{{ reservation.restaurant_name }}</td>
+                        <td>{{ reservation.dinner }}</td>
+                        <td>{{ reservation.estatus }}</td>
+                        <td class="acciones">
+                            <form method="POST">
+                                <input type="hidden" name="reserve_id" value="{{ reservation.reserve_id }}">
+                                <button type="submit" name="action" value="reject">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
 
     <script>
         function mostrarCamposReserva() {
-            // Muestra los campos adicionales cuando se selecciona un restaurante
             const select = document.getElementById("restaurantes");
             const campos = document.getElementById("campos-reserva");
-            if (select.value) {
-                campos.style.display = "block"; // Mostrar los campos
-            } else {
-                campos.style.display = "none"; // Ocultarlos si no hay selección
-            }
+            campos.style.display = select.value ? "block" : "none";
         }
     </script>
-   
-    <form action="" method="POST">
-        <label for="restaurantes">Selecciona un Restaurante:</label>
-        <select id="restaurantes" name="restaurante" onchange="mostrarCamposReserva()" required>
-        
-            <!-- Opción predeterminada vacía -->
-            <option value="" disabled selected>Seleccione un restaurante</option>
-            <!-- Opciones dinámicas -->
-            {% for restaurante in restaurantes %}
-                <option value="{{ restaurante.restaurant_id }}">{{ restaurante.name }}</option>
-            {% endfor %}
-        </select>
-    
-    
-    
-    
-        <!-- Campos adicionales: fecha y número de comensales -->
-        <div id="campos-reserva">
-            <label for="fecha">Fecha de la Reserva:</label>
-            <input type="datetime-local" id="fecha" name="fecha" required>
-    
-            <label for="comensales">Número de Comensales:</label>
-            <input type="number" id="comensales" name="comensales" min="1" required>
-        </div>
-            
-    
-        <button type="submit">Confirmar Reserva</button>
-    
-        <h2>{{ mensaje | safe }}</h2>
-    
-    </form>
-
-
-    <hr>
-
-    <!-- Tabla para ver y gestionar las reservas -->
-    <h2>Reservas</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>FECHA</th>
-                
-                <th>Restaurant</th>
-                <th>Comensales</th> 
-                <th>Estatus</th>
-                <th>Acciones</th> 
-            </tr>
-        </thead>
-        <tbody>
-            {% for reservation in reservations %}
-            <tr>
-                <td>{{ reservation.date }}</td>
-                
-                <td>{{ reservation.restaurant_name }}</td>
-                <td>{{ reservation.dinner }}</td>               
-                <td>{{ reservation.estatus }}</td>
-               
-                <td>
-                    <form method="POST">
-                        <input type="hidden" name="reserve_id" value="{{ reservation.reserve_id }}">
-                        <button type="submit" name="action" value="reject">Cancelar</button>
-                        
-                        
-
-                    </form>
-                    
-                </td>
-               
-
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-
-
+</div>
 </body>
 
 </html>
