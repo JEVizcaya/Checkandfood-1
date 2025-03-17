@@ -234,15 +234,15 @@ def reservar():
             connection = db.get_connection()
             with connection.cursor() as cursor:
                 # Primero obtenemos la capacidad máxima del restaurante
-                cursor.execute("""SELECT max_capacity FROM restaurant WHERE restaurant_id = %s""", (restaurant_id,))
-                max_capacity = cursor.fetchone()[0]
+                cursor.execute("""SELECT capacity FROM restaurant WHERE restaurant_id = %s""", (restaurant_id,))
+                capacity = cursor.fetchone()[0]
 
-                if not max_capacity:
+                if not capacity:
                     connection.close()
                     return "No se encontró la capacidad del restaurante."
 
-                max_capacity = max_capacity[0]
-                print(f"Capacidad máxima del restaurante: {max_capacity}")
+                capacity = capacity[0]
+                print(f"Capacidad máxima del restaurante: {capacity}")
 
                 # Verificar las reservas ya existentes y la capacidad total para la franja horaria seleccionada
                 cursor.execute("""SELECT SUM(number_of_people) FROM reserve WHERE restaurant_id = %s AND time_slot_id = %s""", (restaurant_id, time_slot_id))
@@ -251,7 +251,7 @@ def reservar():
                 print(f"Total de personas reservadas en la franja horaria: {total_reserved}")
                 print(f"Total personas + nuevas reservas: {total_reserved + int(number_of_people)}")
 
-                if total_reserved + int(number_of_people) <= max_capacity:
+                if total_reserved + int(number_of_people) <= capacity:
                     # Proceder con la reserva
                     print(f"Inserting reservation: restaurant_id={restaurant_id}, customer_id={session['user_id']}, time_slot_id={time_slot_id}, number_of_people={number_of_people}")
 

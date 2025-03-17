@@ -30,18 +30,8 @@ CREATE TABLE `customer` (
   `phone_number` varchar(25) NOT NULL,
   PRIMARY KEY (`customer_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer`
---
-
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (2,'Jorge','jorge@gmail.com','scrypt:32768:8:1$TVYTdBsN7Jj6DERQ$1c742faba9f5d86f7e82fa97395e833485251d53b8a9f32b85fbc9caf0c00b5c66fadd737412ce71293d1e9a9a88acbfccf09e6d85c3ddf747cb742cad5207b6','123456789'),(3,'enrique','enrique@gmail.com','scrypt:32768:8:1$Vq4CLtku9F0gagfP$965118fe2babf0eeefaa3aec421d72c8cc713cd15001009b3c23bb05df0743c126eb57a088b075cb0c824140df573482b6cf48ed708b076ed0d85962ce28a454','123458796'),(4,'a','a@a','scrypt:32768:8:1$c0PnalqALFza50k6$30ef197fceb4c67542a368e5b2477d87a335a2a4b07041a45c1004a62c868156cdd50aba3875193f9b57ac34bc6b4c7cd88d542d643851fefe20d46be322a078','456789');
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `reserve`
@@ -70,15 +60,6 @@ CREATE TABLE `reserve` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reserve`
---
-
-LOCK TABLES `reserve` WRITE;
-/*!40000 ALTER TABLE `reserve` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reserve` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `restaurant`
 --
 
@@ -93,21 +74,10 @@ CREATE TABLE `restaurant` (
   `address` varchar(255) NOT NULL,
   `capacity` int(4) NOT NULL,
   `phone_number` varchar(14) NOT NULL,
-  `max_capacity` int(4) NOT NULL,
   PRIMARY KEY (`restaurant_id`),
   UNIQUE KEY `username_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `restaurant`
---
-
-LOCK TABLES `restaurant` WRITE;
-/*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (1,'La Cocina','lacocina@gmail.com','scrypt:32768:8:1$5ih2nEMRPUQ43Dtx$e534b1945bd71130f576f7b8c83d11df2e48574191099357f467b3961aca2703d8e06b5ec8a356728c9d2ecd8a893a59e62bd58e9c162297e1d15d5cb565c587','asd n1',45,'987456321',0),(2,'La Trattoria','latrattoria@email.com','scrypt:32768:8:1$PtqoZ2TNwXBSGZZX$98f862b0502719e1c70d5d7ccec4bb3fdc332a08d092e896fb2829286b336c25a9da39973063ed214ee87e0b7b5ad83e727ca8958191157e9b9a6e53e14843d8','Calle de Ayala, 6, 28001 Madrid​',25,'1234',0);
-/*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `table`
@@ -129,15 +99,6 @@ CREATE TABLE `table` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `table`
---
-
-LOCK TABLES `table` WRITE;
-/*!40000 ALTER TABLE `table` DISABLE KEYS */;
-/*!40000 ALTER TABLE `table` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `time_slot`
 --
 
@@ -154,15 +115,6 @@ CREATE TABLE `time_slot` (
   CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`restaurant_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `time_slot`
---
-
-LOCK TABLES `time_slot` WRITE;
-/*!40000 ALTER TABLE `time_slot` DISABLE KEYS */;
-/*!40000 ALTER TABLE `time_slot` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -173,4 +125,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-17  4:19:16
+-- Dump completed on 2025-03-17 22:49:41
