@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Reserva</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input[type="number"], button {
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .message {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Realizar una Reserva</h1>
+
+        <form method="POST">
+            <label for="restaurant_id">Selecciona el restaurante:</label>
+            <select name="restaurant_id" id="restaurant_id" required>
+                {% for restaurante in restaurantes %}
+                    <option value="{{ restaurante['restaurant_id'] }}">{{ restaurante['name'] }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="time_slot_id">Selecciona la franja horaria:</label>
+            <select name="time_slot_id" id="time_slot_id" required>
+                <option value="1">13:00 - 14:00</option>
+                <option value="2">14:00 - 15:00</option>
+                <option value="3">15:00 - 16:00</option>
+                <option value="4">20:00 - 21:00</option>
+                <option value="5">21:00 - 22:00</option>
+                <option value="6">22:00 - 23:00</option>
+            </select>
+
+            <label for="number_of_people">Número de personas:</label>
+            <input type="number" name="number_of_people" id="number_of_people" min="1" required>
+
+            <button type="submit">Confirmar Reserva</button>
+        </form>
+
+        {% if mensaje %}
+            <p class="message">{{ mensaje }}</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

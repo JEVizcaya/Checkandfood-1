@@ -21,8 +21,8 @@
           <input type="email" id="email" name="email" required placeholder="Correo electrónico">
         </div>
         <div class="input-group">
-          <label for="phone">Número de teléfono</label>
-          <input type="tel" id="phone" name="phone" required placeholder="Número de teléfono">
+          <label for="telefono">Número de teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required placeholder="Número de teléfono">
         </div>
         <div class="input-group">
             <label for="address">Dirección</label>
@@ -41,7 +41,7 @@
           <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirmar contraseña">
         </div>
         <button type="submit" class="btn">Registrarse</button>
-        <p class="login-link">¿Ya tienes cuenta? <a href="{{url_for('restaurantes')}}">Inicia sesión aquí</a></p>
+        <p class="login-link">¿Ya tienes cuenta? <a href="{{url_for('login_restaurantes')}}">Inicia sesión aquí</a></p>
       </form>
     </div>
   </div>

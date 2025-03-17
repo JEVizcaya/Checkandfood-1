@@ -12,101 +12,67 @@ def home():
     return render_template('home.html')
 
 
-# Ruta para login de restaurantes
-@app.route('/restaurantes', methods=['GET'])
-def restaurantes():
-    return render_template('login_restaurant.html')
 
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.form['email']
-    password = request.form['password']
-    
-    conexion = db.get_connection()
-    try:
-        with conexion.cursor() as cursor:
-            sql = "SELECT * FROM restaurant WHERE email=%s"
-            cursor.execute(sql, (email,))
-            restaurant = cursor.fetchone()
-            conexion.close()
 
-        if restaurant and check_password_hash(restaurant['password'], password):
-            session['restaurant_id'] = restaurant['restaurant_id']
-            session['restaurant_name'] = restaurant['name']
-            return redirect(url_for('manage_reservations'))
-        else:
-            return "Credenciales inválidas. Por favor, revisa tu correo y contraseña."
-    except Exception as e:
-            return f"Ha ocurrido un error en la base de datos: {e}" 
- 
-    
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+# Ruta para registro de restaurantes
+@app.route('/registro_restaurantes', methods=['GET', 'POST'])
+def registro_restaurantes():
     if request.method == 'POST':
-        name = request.form['name']
+        nombre = request.form['name']
         email = request.form['email']
-        capacity = int(request.form['capacity'])
+        telefono = request.form['telefono']
         password = request.form['password']
-        hashed_password = generate_password_hash(password)
-        phone = request.form['phone']
-        address = request.form['address']
-        
+        confirm_password = request.form['confirm_password']
+        direccion = request.form['address']
+        capacidad = request.form['capacity']
+
+        if password == confirm_password:
+            hashed_password = generate_password_hash(password)
+
+            try:
+                connection = db.get_connection()
+                with connection.cursor() as cursor:
+                    sql = "INSERT INTO restaurant (name, email, password, phone_number, address, capacity) VALUES (%s, %s, %s, %s, %s, %s)"
+                    cursor.execute(sql, (nombre, email, hashed_password, telefono, direccion, capacidad))
+                    connection.commit()
+                connection.close()
+                return redirect(url_for('login_restaurantes'))
+            except Exception as e:
+                return f"Ha ocurrido un error en la base de datos: {e}"
+        else:
+            return "Las contraseñas no coinciden"
+    return render_template('registro_restaurantes.html')
+
+
+
+# Ruta para login de restaurantes
+@app.route('/login_restaurantes', methods=['GET', 'POST'])
+def login_restaurantes():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
         try:
-            conexion = db.get_connection()
-            with conexion.cursor() as cursor:
-                sql = "INSERT INTO restaurant (name, email, password,address,capacity, phone_number) VALUES (%s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (name, email, hashed_password, address, capacity, phone))
-                conexion.commit()
-            conexion.close()
-            return redirect(url_for('restaurantes'))
+           connection = db.get_connection()
+           cursor = connection.cursor()
+
+           with connection.cursor() as cursor:
+                sql = "SELECT * FROM restaurant WHERE email=%s"
+                cursor.execute(sql, (email,))
+                restaurant = cursor.fetchone()
+                connection.close()
+
+                if restaurant and check_password_hash(restaurant['password'], password):
+                    session['restaurant_id'] = restaurant['restaurant_id']
+                    session['restaurant_name'] = restaurant['name']
+                    return redirect(url_for('dashboard_restaurantes'))
+                else:
+                    return redirect(url_for('login_restaurantes', mensaje="Correo o contraseña inválidos"))
         except Exception as e:
             return f"Ha ocurrido un error en la base de datos: {e}"
-    return render_template('register_restaurant.html')
+    return render_template('login_restaurantes.html')
 
-    # Ruta para gestionar las reservas y asignar mesas
-@app.route('/manage_reservations', methods=['GET', 'POST'])
-def manage_reservations():
-    if 'restaurant_id' not in session:
-        return redirect(url_for('login'))
-    
-    
-    restaurant_id = session['restaurant_id']
-    connection = db.get_connection()
-    cursor = connection.cursor()
 
-   #accion para cambiar estado a confirmado y rechazado
-   
-    if request.method == 'POST':
-        reserve_id = request.form['reserve_id']
-        accion = request.form['action']
-        if accion == 'confirm':
-            cursor.execute('''UPDATE reserve SET estatus = 'confirmado' WHERE reserve_id = %s;''', (reserve_id,))
-            connection.commit()
-        elif accion == 'reject':
-            cursor.execute('''UPDATE reserve SET estatus = 'rechazado' WHERE reserve_id = %s;''', (reserve_id,))
-       
-          
-            connection.commit()
-    # Nombre restaurante
-    cursor.execute('''SELECT name FROM restaurant WHERE restaurant_id = %s;''', (restaurant_id,))
-    restaurant_name = cursor.fetchone()  
-    # Obtener todas las reservas del restaurante
-    cursor.execute('''
-        SELECT r.reserve_id, r.date, r.dinner, r.estatus, c.name as customer_name,c.phone_number
-        FROM reserve r
-        JOIN customer c ON r.customer_id = c.customer_id
-        WHERE r.restaurant_id = %s ORDER BY r.date;
-    ''', (restaurant_id,))
-    reservations = cursor.fetchall()
-    
-    cursor.execute('''
-        SELECT capacity FROM restaurant WHERE restaurant_id = %s;
-    ''', (restaurant_id,))
-    capacity = cursor.fetchone()
-    cursor.close()
-    connection.close()
-
-    return render_template('manage_reservations.html', reservations=reservations,capacity=capacity,restaurant_name=restaurant_name)
 
 # Ruta para registro de clientes
 @app.route('/registro_clientes', methods=['GET', 'POST'])
@@ -122,18 +88,20 @@ def registro_clientes():
             hashed_password = generate_password_hash(password)
 
             try:
-                conexion = db.get_connection()
-                with conexion.cursor() as cursor:
+                connection = db.get_connection()
+                with connection.cursor() as cursor:
                     sql = "INSERT INTO customer (name, email, password, phone_number) VALUES (%s, %s, %s, %s)"
                     cursor.execute(sql, (nombre, email, hashed_password, telefono))
-                    conexion.commit()
-                conexion.close()
+                    connection.commit()
+                connection.close()
                 return redirect(url_for('login_clientes'))
             except Exception as e:
                 return f"Ha ocurrido un error en la base de datos: {e}"
         else:
             return "Las contraseñas no coinciden"
     return render_template('registro_clientes.html')
+
+
 
 # Ruta para login de clientes
 @app.route('/login_clientes', methods=['GET', 'POST'])
@@ -143,118 +111,171 @@ def login_clientes():
         password = request.form['password']
 
         try:
-            conexion = db.get_connection()
-            with conexion.cursor() as cursor:
+            connection = db.get_connection()
+            with connection.cursor() as cursor:
                 sql = "SELECT * FROM customer WHERE email=%s"
                 cursor.execute(sql, (email,))
                 user = cursor.fetchone()
-                conexion.close()
+                connection.close()
 
             if user and check_password_hash(user['password'], password):
                 session['user_id'] = user['customer_id']
                 session['user_name'] = user['name']
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('dashboard_clientes'))
             else:
-                return render_template('login_clientes.html', mensaje="usuario inválido")
-                #return "Credenciales inválidas. Por favor, revisa tu correo y contraseña."
+                return render_template('login_clientes.html', mensaje="Usuario o contraseña inválidos")
         except Exception as e:
             return f"Ha ocurrido un error en la base de datos: {e}"
     return render_template('login_clientes.html')
 
-    # CLIENTES Ruta para gestionar las reservas 
-@app.route('/dashboard', methods=['GET', 'POST'])
-def dashboard():
+
+
+
+# Ruta para el dashboard del restaurante (ejemplo de página de inicio después de login)
+@app.route('/dashboard_restaurantes', methods=['GET', 'POST'])
+def dashboard_restaurantes():
+  
+    # Comprobar si el restaurante está logueado
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))
+
+    restaurant_id = session['restaurant_id']
+
+    try:
+        connection = db.get_connection()
+        with connection.cursor() as cursor:
+            # Obtener información básica del restaurante
+            sql_restaurant = "SELECT name, email, phone_number, address, capacity FROM restaurant WHERE restaurant_id = %s"
+            cursor.execute(sql_restaurant, (restaurant_id,))
+            restaurant_info = cursor.fetchone()
+
+            # Obtener todas las reservas del restaurante
+            sql_reservations = """SELECT r.reserve_id, r.reserve_time, c.name AS customer_name, r.number_of_people
+                                    FROM reserve r
+                                    JOIN customer c ON r.customer_id = c.customer_id
+                                    WHERE r.restaurant_id = %s
+                                    AND r.estatus = 'activa'
+                                    ORDER BY r.reserve_time"""
+            cursor.execute(sql_reservations, (restaurant_id,))
+            active_reservations = cursor.fetchall()
+
+            # Cerrar la conexión
+            connection.close()
+
+        return render_template('dashboard_restaurantes.html', restaurant=restaurant_info, reservations=active_reservations)
+
+    except Exception as e:
+        return f"Ha ocurrido un error en la base de datos: {e}"
+
+    
+    
+
+    
+
+# Ruta para el dashboard del cliente (ejemplo de página de inicio después de login)
+@app.route('/dashboard_clientes', methods=['GET', 'POST'])
+def dashboard_clientes():
+    if 'user_id' not in session:  # Si el cliente no está logueado
+        return redirect(url_for('login_clientes'))
+
+    try:
+        # Obtén el ID del cliente de la sesión
+        customer_id = session['user_id']
+
+        # Conexión a la base de datos
+        connection = db.get_connection()
+        with connection.cursor() as cursor:
+            # Obtener las reservas activas del cliente
+            sql = """
+               SELECT r.reserve_id, r.reserve_time, t.table_name, r.number_of_people, r.estatus
+                FROM reserve r
+                JOIN `table` t ON r.table_id = t.table_id
+                JOIN time_slot ts ON r.time_slot_id = ts.time_slot_id
+                WHERE r.customer_id = %s AND r.estatus = 'activa'
+                ORDER BY r.reserve_time
+            """
+            cursor.execute(sql, (customer_id,))
+            reservas = cursor.fetchall()  # Obtener todas las reservas activas
+
+        connection.close()
+
+        # Renderizar la plantilla y pasar las reservas activas
+        return render_template('dashboard_clientes.html', reservas=reservas)
+
+    except Exception as e:
+        return f"Ha ocurrido un error en la base de datos: {e}"
+    
+#reservas
+
+
+@app.route('/reservar', methods=['GET', 'POST'])
+def reservar():
     if 'user_id' not in session:
-    #if 'restaurant_id' not in session:
-        return redirect(url_for('login'))
-    
-    
-    #restaurant_id = session['restaurant_id']
-    connection = db.get_connection()
-    cursor = connection.cursor()
+        return redirect(url_for('login_clientes'))  # Redirige al login si no está logueado
 
-   #accion para cambiar estado a confirmado y rechazado
-   
-    if (request.method == 'POST' and ('restaurante' in request.form)):
-        id_restaurante = request.form['restaurante'] 
-        fecha = request.form['fecha']
-        numero_comensales = request.form['comensales']
-        cliente = session['user_id']
-        #creamos la conexion
-        #conexion = db.get_connection()
+    # Obtener la lista de restaurantes disponibles
+    try:
+        connection = db.get_connection()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT restaurant_id, name FROM restaurant")
+            restaurantes = cursor.fetchall()
+            connection.close()
+    except Exception as e:
+        return f"Error al obtener restaurantes: {e}"
+
+    # Si el formulario es enviado (POST)
+    if request.method == 'POST':
+        restaurant_id = request.form['restaurant_id']
+        time_slot_id = request.form['time_slot_id']
+        number_of_people = request.form['number_of_people']
+
+        # Verificar disponibilidad (esto puede incluir un procedimiento para comprobar capacidad)
         try:
+            connection = db.get_connection()
             with connection.cursor() as cursor:
-                
-                #creamos la consulta
-                consulta = "INSERT INTO reserve (date, dinner, restaurant_id, customer_id) VALUES (%s, %s, %s, %s)"
-                datos = (fecha,numero_comensales,id_restaurante,cliente)
-                cursor.execute(consulta,datos)
-                resultados = cursor.fetchone()
-                connection.commit()
+                # Primero obtenemos la capacidad máxima del restaurante
+                cursor.execute("""SELECT max_capacity FROM restaurant WHERE restaurant_id = %s""", (restaurant_id,))
+                max_capacity = cursor.fetchone()[0]
 
-                # Obtener todas las reservas del restaurante
-                # cursor.execute('''
-                #     SELECT r.reserve_id, r.date, r.dinner, r.estatus, c.name as customer_name,c.phone_number
-                #     FROM reserve r
-                #     JOIN customer c ON r.customer_id = c.customer_id
-                #     WHERE r.restaurant_id = %s;
-                # ''', (1,))
-                # reservations = cursor.fetchall()
-                return redirect(url_for('dashboard'))
+                if not max_capacity:
+                    connection.close()
+                    return "No se encontró la capacidad del restaurante."
 
+                max_capacity = max_capacity[0]
+                print(f"Capacidad máxima del restaurante: {max_capacity}")
 
-                #return render_template('customer_dashboard.html',mensaje="<h1><a href='/'> confirmada </a></h1>")
+                # Verificar las reservas ya existentes y la capacidad total para la franja horaria seleccionada
+                cursor.execute("""SELECT SUM(number_of_people) FROM reserve WHERE restaurant_id = %s AND time_slot_id = %s""", (restaurant_id, time_slot_id))
+                total_reserved = cursor.fetchone()[0] or 0  # Si no hay reservas, asumimos que es 0
+
+                print(f"Total de personas reservadas en la franja horaria: {total_reserved}")
+                print(f"Total personas + nuevas reservas: {total_reserved + int(number_of_people)}")
+
+                if total_reserved + int(number_of_people) <= max_capacity:
+                    # Proceder con la reserva
+                    print(f"Inserting reservation: restaurant_id={restaurant_id}, customer_id={session['user_id']}, time_slot_id={time_slot_id}, number_of_people={number_of_people}")
+
+                    cursor.execute("""INSERT INTO reserve (restaurant_id, customer_id, time_slot_id, number_of_people, reserve_time, estatus) 
+                                      VALUES (%s, %s, %s, %s, NOW(), 'activa')""", 
+                                      (restaurant_id, session['user_id'], time_slot_id, number_of_people))
+                    connection.commit()
+                    connection.close()
+                    return redirect(url_for('dashboard_clientes'))  # Redirige al dashboard del cliente
+                else:
+                    connection.close()
+                    return "No hay suficiente espacio para la cantidad de personas en esta franja horaria."
 
         except Exception as e:
-            print("Ocurrió un error al conectar a la bbdd: ", e)
-        finally:    
             connection.close()
-            print("Conexión cerrada") 
+            return f"Error al realizar la reserva: {e}"
 
-
-    if (request.method == 'POST' and request.form['action']):
-        reserve_id = request.form['reserve_id']
-        accion = request.form['action']
-        if accion == 'confirm':
-            cursor.execute('''UPDATE reserve SET estatus = 'confirmado' WHERE reserve_id = %s;''', (reserve_id,))
-            connection.commit()
-        elif accion == 'reject':
-            cursor.execute('''UPDATE reserve SET estatus = 'cancelado por cliente' WHERE reserve_id = %s;''', (reserve_id,))
-            
-            connection.commit()
-
-    # Obtener todas las reservas del restaurante
-    ###cursor.execute("SELECT * FROM reserve WHERE customer_id=%s", (session['user_id'],))
-    
-    # Obtener todas las reservas del restaurante
-    #SELECT r.reserve_id, r.date, r.dinner, r.estatus, c.name as restaurant_name FROM reserve r   JOIN restaurant c ON r.restaurant_id = c.restaurant_id        WHERE r.customer_id = 2;
-    cursor.execute('''
-        SELECT r.reserve_id, r.date, r.dinner, r.estatus, c.name as restaurant_name
-        FROM reserve r
-        JOIN restaurant c ON r.restaurant_id = c.restaurant_id
-        WHERE r.customer_id = %s;
-    ''', (session['user_id'],))
-    
-
-    reservations = cursor.fetchall()
-    
-    cursor.execute("SELECT * FROM restaurant")
-    restaurantes = cursor.fetchall()
-    customer_id = session['user_id']
-    cursor.execute('''SELECT name FROM customer WHERE customer_id = %s;''', (customer_id,))
-    customer_name = cursor.fetchone()
-    cursor.close()
-    connection.close()
-    
-
-    
-    return render_template('customer_dashboard.html', customer_name=customer_name,restaurantes=restaurantes, reservations=reservations)
+    # Si el método es GET, muestra los restaurantes y franjas horarias
+    return render_template('reservar.html', restaurantes=restaurantes)
 
 
 
- 
 
-# Ruta para logout
+    # Ruta para logout
 @app.route('/logout')
 def logout():
     session.clear()

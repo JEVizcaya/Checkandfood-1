@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard del Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .button {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Bienvenido, {{ session['user_name'] }}!</h1>
+
+        <h2>Tus Reservas</h2>
+
+        {% if reservas %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reserva ID</th>
+                        <th>Restaurante</th>
+                        <th>Franja Horaria</th>
+                        <th>Número de Personas</th>
+                        <th>Fecha de Reserva</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in reservas %}
+                        <tr>
+                            <td>{{ reserva['reserve_id'] }}</td>
+                            <td>{{ reserva['restaurant_name'] }}</td>
+                            <td>{{ reserva['time_slot'] }}</td>
+                            <td>{{ reserva['number_of_people'] }}</td>
+                            <td>{{ reserva['reserve_time'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No tienes reservas.</p>
+        {% endif %}
+
+        <a href="{{ url_for('reservar') }}" class="button">Realizar una nueva reserva</a>
+    </div>
+
+</body>
+</html>
