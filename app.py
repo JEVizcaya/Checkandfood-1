@@ -202,7 +202,8 @@ def editar_restaurante():
                     SET name = %s, address = %s, capacity = %s, phone_number = %s 
                     WHERE restaurant_id = %s
                 """, (name, address, capacity, phone_number, restaurant_id))
-        
+            connection.commit()
+            flash('Restaurante actualizado exitosamente', 'success')
         # Si el formulario de franjas horarias es el que fue enviado
         elif 'start_time' in request.form and 'end_time' in request.form:
             start_time = request.form['start_time']
@@ -217,9 +218,9 @@ def editar_restaurante():
             connection.commit()
             flash('Franja horaria agregada exitosamente', 'success')
         
-        connection.commit()
+        
         connection.close()
-        flash('Restaurante actualizado exitosamente', 'success')
+        
         return redirect(url_for('editar_restaurante'))
 
     with connection.cursor() as cursor:
