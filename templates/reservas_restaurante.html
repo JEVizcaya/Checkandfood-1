@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Reservas</title>
+</head>
+<body>
+    <h1>Reservas</h1>
+    
+    <!-- Verifica si no hay reservas y muestra un mensaje -->
+    {% if reservas_vacias %}
+        <p>No hay reservas en este momento.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.customer_name }}</td>  <!-- Nombre del cliente -->
+                    <td>{{ reserva.reserve_time }}</td>  <!-- Fecha y hora de la reserva -->
+                    <td>{{ reserva.start_time }}</td>  <!-- Hora de inicio -->
+                    <td>{{ reserva.estatus }}</td>  <!-- Estado de la reserva -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

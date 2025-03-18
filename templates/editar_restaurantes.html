@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Restaurante</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/restaurantes/editar_restaurantes.css')}}"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <nav>
+           <h1>Editar Restaurante</h1> 
+           <a href="{{url_for('home_restaurantes')}}"><button type="submit">Volver</button></a>
+        </nav>
+        
+
+        <!-- Mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="form-editar">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" value="{{ restaurant.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" id="address" name="address" value="{{ restaurant.address }}" required>
+            </div>
+            <div class="form-group">
+                <label for="capacity">Capacidad:</label>
+                <input type="number" id="capacity" name="capacity" value="{{ restaurant.capacity }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Teléfono:</label>
+                <input type="text" id="phone_number" name="phone_number" value="{{ restaurant.phone_number }}" required>
+            </div>
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+        </form>
+
+        <!-- Contenedor para las franjas horarias -->
+        <div class="franjas-container">
+            <div class="franjas-horarias">
+                <h2>Franjas Horarias Actuales</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hora de Inicio</th>
+                            <th>Hora de Fin</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for slot in time_slots %}
+                        <tr>
+                            <td>{{ slot.start_time }}</td>
+                            <td>{{ slot.end_time }}</td>
+                            <td>
+                                <!-- Formulario para eliminar la franja horaria con botón llamativo -->
+                                <form action="{{ url_for('eliminar_franja') }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="time_slot_id" value="{{ slot.time_slot_id }}">
+                                    <button type="submit" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que quieres eliminar esta franja horaria?')">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="agregar-franja">
+                <h3>Agregar Nueva Franja Horaria</h3>
+                <form method="POST" class="form-editar">
+                    <div class="form-group">
+                        <label for="start_time">Hora de Inicio:</label>
+                        <input type="text" id="start_time" name="start_time" placeholder="HH:mm" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_time">Hora de Fin:</label>
+                        <input type="text" id="end_time" name="end_time" placeholder="HH:mm" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Agregar Franja Horaria</button>
+                </form>
+            </div>
+        </div> <!-- Cierre de franjas-container -->
+
+    </div>
+    <script>
+        // Espera que la página haya cargado completamente
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener todos los mensajes flash
+            const flashMessages = document.querySelectorAll('.flash-messages .alert');
+    
+            flashMessages.forEach(function(flashMessage) {
+                // Después de 1 segundo (1000 ms), ocultar el mensaje
+                setTimeout(function() {
+                    flashMessage.style.transition = 'opacity 0.5s ease-out'; // Agrega una transición suave
+                    flashMessage.style.opacity = '0'; // Reduce la opacidad para hacer desaparecer el mensaje
+                    // Después de la transición, eliminar el mensaje
+                    setTimeout(function() {
+                        flashMessage.remove();
+                    }, 500); // Elimina el mensaje después de medio segundo
+                }, 1000); // Retardo de 1 segundo antes de empezar la desaparición
+            });
+        });
+    </script>
+</body>
+</html>

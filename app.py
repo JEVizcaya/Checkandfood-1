@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pymysql
 import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -65,7 +65,7 @@ def login_restaurantes():
                 if restaurant and check_password_hash(restaurant['password'], password):
                     session['restaurant_id'] = restaurant['restaurant_id']
                     session['restaurant_name'] = restaurant['name']
-                    return redirect(url_for('dashboard_restaurantes'))
+                    return redirect(url_for('home_restaurantes'))
                 else:
                     return redirect(url_for('login_restaurantes', mensaje="Correo o contraseña inválidos"))
         except Exception as e:
@@ -129,45 +129,155 @@ def login_clientes():
     return render_template('login_clientes.html')
 
 
-
-
-# Ruta para el dashboard del restaurante (ejemplo de página de inicio después de login)
-@app.route('/dashboard_restaurantes', methods=['GET', 'POST'])
-def dashboard_restaurantes():
-  
-    # Comprobar si el restaurante está logueado
+# Ruta home_restaurantes
+@app.route('/home_restaurantes')
+def home_restaurantes():
     if 'restaurant_id' not in session:
-        return redirect(url_for('login_restaurantes'))
+        return redirect(url_for('login_restaurantes'))  # Redirige al login si no está autenticado
+    
+    restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM restaurant WHERE restaurant_id = %s", (restaurant_id,))
+        restaurant = cursor.fetchone()
+
+    connection.close()
+    return render_template('home_restaurantes.html', restaurant=restaurant)
+
+
+
+
+# Ruta para ver reservas restaurante
+@app.route('/reservas_restaurante')
+def reservas_restaurante():
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Redirige al login si no está autenticado
 
     restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        query = """
+        SELECT reserve.reserve_id, customer.name, reserve.reserve_time, time_slot.start_time, reserve.estatus
+        FROM reserve
+        JOIN customer ON reserve.customer_id = customer.customer_id
+        JOIN time_slot ON reserve.time_slot_id = time_slot.time_slot_id
+        WHERE reserve.restaurant_id = %s
+        """
+        cursor.execute(query, (restaurant_id,))
+        reservas = cursor.fetchall()
 
-    try:
-        connection = db.get_connection()
-        with connection.cursor() as cursor:
-            # Obtener información básica del restaurante
-            sql_restaurant = "SELECT name, email, phone_number, address, capacity FROM restaurant WHERE restaurant_id = %s"
-            cursor.execute(sql_restaurant, (restaurant_id,))
-            restaurant_info = cursor.fetchone()
+    connection.close()
+    # Si no hay reservas, pasamos una variable adicional al template para mostrar el mensaje
+    if not reservas:
+        reservas_vacias = True
+    else:
+        reservas_vacias = False
 
-            # Obtener todas las reservas del restaurante
-            sql_reservations = """SELECT r.reserve_id, r.reserve_time, c.name AS customer_name, r.number_of_people
-                                    FROM reserve r
-                                    JOIN customer c ON r.customer_id = c.customer_id
-                                    WHERE r.restaurant_id = %s
-                                    AND r.estatus = 'activa'
-                                    ORDER BY r.reserve_time"""
-            cursor.execute(sql_reservations, (restaurant_id,))
-            active_reservations = cursor.fetchall()
+    return render_template('reservas_restaurante.html', reservas=reservas, reservas_vacias=reservas_vacias)
+   
 
-            # Cerrar la conexión
-            connection.close()
-
-        return render_template('dashboard_restaurantes.html', restaurant=restaurant_info, reservations=active_reservations)
-
-    except Exception as e:
-        return f"Ha ocurrido un error en la base de datos: {e}"
 
     
+ # Ruta para editar restaurante
+ 
+@app.route('/editar_restaurante', methods=['GET', 'POST'])
+def editar_restaurante():
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Redirige al login si no está autenticado
+
+    restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+
+    if request.method == 'POST':
+        if 'name' in request.form:  # Esto se aplica solo al formulario de editar el restaurante
+            name = request.form['name']
+            address = request.form['address']
+            capacity = request.form['capacity']
+            phone_number = request.form['phone_number']
+            
+            # Actualizar los datos del restaurante
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE restaurant 
+                    SET name = %s, address = %s, capacity = %s, phone_number = %s 
+                    WHERE restaurant_id = %s
+                """, (name, address, capacity, phone_number, restaurant_id))
+        
+        # Si el formulario de franjas horarias es el que fue enviado
+        elif 'start_time' in request.form and 'end_time' in request.form:
+            start_time = request.form['start_time']
+            end_time = request.form['end_time']
+            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO time_slot (restaurant_id, start_time, end_time)
+                    VALUES (%s, %s, %s)
+                """, (restaurant_id, start_time, end_time))
+            
+            connection.commit()
+            flash('Franja horaria agregada exitosamente', 'success')
+        
+        connection.commit()
+        connection.close()
+        flash('Restaurante actualizado exitosamente', 'success')
+        return redirect(url_for('editar_restaurante'))
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM restaurant WHERE restaurant_id = %s", (restaurant_id,))
+        restaurant = cursor.fetchone()
+
+        # Obtener las franjas horarias actuales del restaurante
+        cursor.execute("SELECT * FROM time_slot WHERE restaurant_id = %s", (restaurant_id,))
+        time_slots = cursor.fetchall()
+
+    connection.close()
+    return render_template('editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots)
+
+# Ruta para eliminar una franja horaria
+@app.route('/eliminar_franja', methods=['POST'])
+def eliminar_franja():
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Redirige al login si no está autenticado
+
+    restaurant_id = session['restaurant_id']
+    time_slot_id = request.form['time_slot_id']  # Obtén el ID de la franja horaria desde el formulario
+
+    connection = db.get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+            # Eliminar la franja horaria de la base de datos
+            cursor.execute("DELETE FROM time_slot WHERE time_slot_id = %s AND restaurant_id = %s", (time_slot_id, restaurant_id))
+            connection.commit()
+            flash('Franja horaria eliminada exitosamente', 'success')
+    except Exception as e:
+        connection.rollback()  # Si hay un error, hacer rollback
+        flash('Error al eliminar la franja horaria', 'danger')
+    
+    connection.close()
+
+    return redirect(url_for('editar_restaurante'))  # Redirige de nuevo a la página de edición del restaurante
+
+
+# Ruta para eliminar Restaurante
+
+@app.route('/eliminar_restaurante', methods=['POST'])
+def eliminar_restaurante():
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Redirige al login si no está autenticado
+
+    restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM restaurant WHERE restaurant_id = %s", (restaurant_id,))
+        connection.commit()
+
+    connection.close()
+    session.pop('restaurant_id', None)  # Elimina la sesión del restaurante
+    flash('Restaurante eliminado exitosamente', 'danger')
+    return redirect(url_for('login_restaurantes'))  # Redirige a la página de login
+
     
 
     
@@ -279,6 +389,7 @@ def reservar():
 @app.route('/logout')
 def logout():
     session.clear()
+    
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
