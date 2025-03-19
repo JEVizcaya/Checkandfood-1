@@ -344,12 +344,11 @@ def dashboard_clientes():
         with connection.cursor() as cursor:
             # Obtener las reservas activas del cliente
             sql = """
-               SELECT r.reserve_id, r.reserve_time, t.table_name, r.number_of_people, r.estatus
-                FROM reserve r
-                JOIN `table` t ON r.table_id = t.table_id
-                JOIN time_slot ts ON r.time_slot_id = ts.time_slot_id
-                WHERE r.customer_id = %s AND r.estatus = 'activa'
-                ORDER BY r.reserve_time
+               SELECT r.reserve_id, r.reserve_time, r.number_of_people, r.estatus
+    FROM reserve r
+    JOIN time_slot ts ON r.time_slot_id = ts.time_slot_id
+    WHERE r.customer_id = %s AND r.estatus = 'activa'
+    ORDER BY r.reserve_time
             """
             cursor.execute(sql, (customer_id,))
             reservas = cursor.fetchall()  # Obtener todas las reservas activas
@@ -362,9 +361,8 @@ def dashboard_clientes():
     except Exception as e:
         return f"Ha ocurrido un error en la base de datos: {e}"
     
+
 #reservas
-
-
 @app.route('/reservar', methods=['GET', 'POST'])
 def reservar():
     if 'user_id' not in session:
