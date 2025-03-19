@@ -71,6 +71,10 @@ CREATE TABLE `restaurant` (
   `address` varchar(255) NOT NULL,
   `capacity` int(4) NOT NULL,
   `phone_number` varchar(14) NOT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `description` tinytext DEFAULT NULL,
+  `speciality` tinytext DEFAULT NULL,
+  `web` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`restaurant_id`),
   UNIQUE KEY `username_UNIQUE` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -103,4 +107,4 @@ CREATE TABLE `time_slot` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-19  0:15:50
+-- Dump completed on 2025-03-19  3:16:01

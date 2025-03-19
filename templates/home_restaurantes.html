@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Meta para mejorar la respuesta en dispositivos móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Restaurante</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/restaurantes/home_restaurantes.css')}}">
 </head>
@@ -10,7 +10,7 @@
     <div class="container">
         <nav>
             <h1>{{ restaurant.name }}</h1>
-            <a href="{{ url_for('logout')}}"><button type="submit">Cerrar Sesión</button></a>
+            <a href="{{ url_for('logout')}}"><button type="button">Cerrar Sesión</button></a>
         </nav>
     
         <ul>

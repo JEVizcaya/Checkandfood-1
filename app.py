@@ -233,17 +233,21 @@ def editar_restaurante():
     if request.method == 'POST':
         if 'name' in request.form:  # Esto se aplica solo al formulario de editar el restaurante
             name = request.form['name']
+            web = request.form['web']
             address = request.form['address']
             capacity = request.form['capacity']
             phone_number = request.form['phone_number']
+            type = request.form['type']
+            description = request.form['description']
+            speciality = request.form['speciality']
             
             # Actualizar los datos del restaurante
             with connection.cursor() as cursor:
                 cursor.execute("""
                     UPDATE restaurant 
-                    SET name = %s, address = %s, capacity = %s, phone_number = %s 
+                    SET name = %s, web= %s, address = %s, capacity = %s, phone_number = %s, type=%s, description=%s, speciality=%s 
                     WHERE restaurant_id = %s
-                """, (name, address, capacity, phone_number, restaurant_id))
+                """, (name, web, address, capacity, phone_number, type, description, speciality, restaurant_id))
             connection.commit()
             flash('Restaurante actualizado exitosamente', 'success')
         # Si el formulario de franjas horarias es el que fue enviado
