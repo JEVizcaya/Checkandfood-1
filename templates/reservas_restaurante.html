@@ -1,36 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Ver Reservas</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/restaurantes/reservas_restaurante.css')}}">
 </head>
+
 <body>
-    <h1>Reservas</h1>
-    
+    <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="alert {{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <nav>
+        <h1>Reservas</h1>
+        <a href="{{ url_for('home_restaurantes') }}" class="btn-volver">Volver</a>
+    </nav>
+
     <!-- Verifica si no hay reservas y muestra un mensaje -->
     {% if reservas_vacias %}
-        <p>No hay reservas en este momento.</p>
+    <p>No hay reservas en este momento.</p>
     {% else %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reserva in reservas %}
-                <tr>
-                    <td>{{ reserva.customer_name }}</td>  <!-- Nombre del cliente -->
-                    <td>{{ reserva.reserve_time }}</td>  <!-- Fecha y hora de la reserva -->
-                    <td>{{ reserva.start_time }}</td>  <!-- Hora de inicio -->
-                    <td>{{ reserva.estatus }}</td>  <!-- Estado de la reserva -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Nº de personas</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.name }}</td> <!-- Nombre del cliente -->
+                <td>{{ reserva.reserve_time }}</td> <!-- Fecha y hora de la reserva -->
+                <td>{{ reserva.number_of_people }}</td> <!-- Número de personas en la reserva -->
+                <td>{{ reserva.start_time }}</td> <!-- Hora de inicio -->
+                <td>{{ reserva.estatus }}</td> <!-- Estado de la reserva -->
+                <td>
+                    <form action="{{ url_for('aceptar_reserva', reserva_id=reserva.reserve_id) }}" method="POST"
+                        style="display: inline;">
+                        <button type="submit" class="aceptar">Aceptar</button>
+                    </form>
+                    <form action="{{ url_for('rechazar_reserva', reserva_id=reserva.reserve_id) }}" method="POST"
+                        style="display: inline;">
+                        <button type="submit" class="rechazar">Rechazar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
+</div>
+
+<script src="{{url_for('static', filename='js/restaurantes/reservas_restaurante.js')}}"></script>
 </body>
+
 </html>

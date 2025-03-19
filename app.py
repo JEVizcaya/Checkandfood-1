@@ -157,7 +157,7 @@ def reservas_restaurante():
     connection = db.get_connection()
     with connection.cursor() as cursor:
         query = """
-        SELECT reserve.reserve_id, customer.name, reserve.reserve_time, time_slot.start_time, reserve.estatus
+        SELECT reserve.reserve_id, customer.name, reserve.number_of_people, reserve.reserve_time, time_slot.start_time, reserve.estatus
         FROM reserve
         JOIN customer ON reserve.customer_id = customer.customer_id
         JOIN time_slot ON reserve.time_slot_id = time_slot.time_slot_id
@@ -174,6 +174,48 @@ def reservas_restaurante():
         reservas_vacias = False
 
     return render_template('reservas_restaurante.html', reservas=reservas, reservas_vacias=reservas_vacias)
+# Aceptar reservas
+@app.route('/aceptar_reserva/<int:reserva_id>', methods=['POST'])
+def aceptar_reserva(reserva_id):
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Verifica si el restaurante está autenticado
+
+    restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        # Actualiza el estado de la reserva a 'aceptada'
+        query = """
+        UPDATE reserve
+        SET estatus = 'aceptada'
+        WHERE reserve_id = %s AND restaurant_id = %s
+        """
+        cursor.execute(query, (reserva_id, restaurant_id))
+        connection.commit()
+
+    connection.close()
+    flash('Reserva aceptada exitosamente.', 'success')
+    return redirect(url_for('reservas_restaurante'))
+# Rechazar reservas
+@app.route('/rechazar_reserva/<int:reserva_id>', methods=['POST'])
+def rechazar_reserva(reserva_id):
+    if 'restaurant_id' not in session:
+        return redirect(url_for('login_restaurantes'))  # Verifica si el restaurante está autenticado
+
+    restaurant_id = session['restaurant_id']
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        # Actualiza el estado de la reserva a 'rechazada'
+        query = """
+        UPDATE reserve
+        SET estatus = 'rechazada'
+        WHERE reserve_id = %s AND restaurant_id = %s
+        """
+        cursor.execute(query, (reserva_id, restaurant_id))
+        connection.commit()
+
+    connection.close()
+    flash('Reserva rechazada exitosamente.', 'danger')
+    return redirect(url_for('reservas_restaurante'))
    
 
 

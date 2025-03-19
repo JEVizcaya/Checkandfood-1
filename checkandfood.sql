@@ -43,20 +43,17 @@ DROP TABLE IF EXISTS `reserve`;
 CREATE TABLE `reserve` (
   `reserve_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
-  `table_id` int(11) NOT NULL,
   `time_slot_id` int(11) NOT NULL,
   `number_of_people` int(4) NOT NULL,
-  `reserve_time` datetime NOT NULL DEFAULT current_timestamp(),
-  `estatus` varchar(20) NOT NULL DEFAULT 'activa',
+  `reserve_time` date NOT NULL,
+  `estatus` varchar(20) NOT NULL DEFAULT 'pendiente',
   `restaurant_id` int(11) NOT NULL,
   PRIMARY KEY (`reserve_id`),
   KEY `customer_id` (`customer_id`),
   KEY `time_slot_id` (`time_slot_id`),
-  KEY `idx_reserve_table_time` (`table_id`,`time_slot_id`),
   CONSTRAINT `reserve_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `reserve_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `table` (`table_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reserve_ibfk_3` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,26 +73,7 @@ CREATE TABLE `restaurant` (
   `phone_number` varchar(14) NOT NULL,
   PRIMARY KEY (`restaurant_id`),
   UNIQUE KEY `username_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `table`
---
-
-DROP TABLE IF EXISTS `table`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `table` (
-  `table_id` int(11) NOT NULL AUTO_INCREMENT,
-  `restaurant_id` int(11) NOT NULL,
-  `seats` int(4) NOT NULL,
-  `table_name` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`table_id`),
-  KEY `restaurant_id` (`restaurant_id`),
-  CONSTRAINT `table_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`restaurant_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +91,7 @@ CREATE TABLE `time_slot` (
   PRIMARY KEY (`time_slot_id`),
   KEY `restaurant_id` (`restaurant_id`),
   CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`restaurant_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -125,4 +103,4 @@ CREATE TABLE `time_slot` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-17 22:49:41
+-- Dump completed on 2025-03-19  0:15:50
