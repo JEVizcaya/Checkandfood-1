@@ -468,12 +468,6 @@ def cancelar_reserva(reserve_id):
     return redirect(url_for('mis_reservas'))  # Asegúrate de que 'mis_reservas' está definida
 
 
-
-
-
-
-
-
 # Ruta para eliminar Perfil
 
 @app.route('/eliminar_perfil', methods=['POST'])

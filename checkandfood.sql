@@ -30,7 +30,7 @@ CREATE TABLE `customer` (
   `phone_number` varchar(25) NOT NULL,
   PRIMARY KEY (`customer_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,14 +46,14 @@ CREATE TABLE `reserve` (
   `time_slot_id` int(11) NOT NULL,
   `number_of_people` int(4) NOT NULL,
   `reserve_time` date NOT NULL,
-  `estatus` varchar(20) NOT NULL DEFAULT 'pendiente',
+  `estatus` enum('pendiente','aceptada','rechazada','cancelada') DEFAULT 'pendiente',
   `restaurant_id` int(11) NOT NULL,
   PRIMARY KEY (`reserve_id`),
   KEY `customer_id` (`customer_id`),
   KEY `time_slot_id` (`time_slot_id`),
   CONSTRAINT `reserve_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `reserve_ibfk_3` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,9 +92,11 @@ CREATE TABLE `time_slot` (
   `restaurant_id` int(11) NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
+  `reserve_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`time_slot_id`),
   KEY `restaurant_id` (`restaurant_id`),
-  CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`restaurant_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_reserva` (`reserve_id`),
+  CONSTRAINT `fk_reserva` FOREIGN KEY (`reserve_id`) REFERENCES `reserve` (`reserve_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -107,4 +109,4 @@ CREATE TABLE `time_slot` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-19  3:16:01
+-- Dump completed on 2025-03-20  5:03:09
