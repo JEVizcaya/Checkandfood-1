@@ -168,6 +168,7 @@ def reservas_restaurante():
         JOIN customer ON reserve.customer_id = customer.customer_id
         JOIN time_slot ON reserve.time_slot_id = time_slot.time_slot_id
         WHERE reserve.restaurant_id = %s
+        ORDER BY reserve.reserve_id DESC
         """
         cursor.execute(query, (restaurant_id,))
         reservas = cursor.fetchall()
@@ -429,7 +430,7 @@ def mis_reservas():
             JOIN restaurant res ON r.restaurant_id = res.restaurant_id
             JOIN time_slot t ON r.time_slot_id = t.time_slot_id
             WHERE r.customer_id = %s
-            ORDER BY r.reserve_time DESC
+            ORDER BY r.reserve_id DESC
         """, (customer_id,))
         
         reservas = cursor.fetchall()
