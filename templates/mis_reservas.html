@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/restaurantes/reservas_restaurante.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for category, message in messages %}
+            <li class="alert {{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <nav>
+            <h1>Mis Reservas</h1>
+            <a href="{{ url_for('home_clientes') }}" class="btn-volver">Volver</a>
+        </nav>
+
+        {% if reservas %}
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Personas</th>
+                <th>Restaurante</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            {% for reserva in reservas %}
+            <tr class="{% if reserva.estatus == 'cancelada' or reserva.estatus == 'rechazada' %}cancelada{% endif %}">
+                <td>{{ reserva.reserve_time }}</td>
+                <td>{{ reserva.start_time }} - {{ reserva.end_time }}</td>
+                <td>{{ reserva.number_of_people }}</td>
+                <td>{{ reserva.restaurant_name }}</td>
+                <td>{{ reserva.estatus }}</td>
+                <td>
+
+                    {% if reserva.estatus == 'pendiente' or reserva.estatus == 'aceptada' %}
+                    <form action="{{ url_for('cancelar_reserva', reserve_id=reserva.reserve_id) }}" method="post">
+                        <button type="submit" class="rechazar">Cancelar</button>
+                    </form>
+                {% else %}
+                    <span class="text-muted">No modificable</span>
+                {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No tienes reservas registradas.</p>
+        {% endif %}
+
+    </div>
+    <script src="{{url_for('static', filename='js/restaurantes/reservas_restaurante.js')}}"></script>
+</body>
+
+</html>

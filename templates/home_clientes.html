@@ -16,9 +16,9 @@
         </nav>
         <h2>¿Qué te gustaría hacer?</h2>
         <ul>
-            <li><a href="">Ver mis reservas</a></li>
+            <li><a href="{{url_for('mis_reservas')}}">Ver mis reservas</a></li>
             <li><a href="">Realizar una reserva</a></li>
-            <li><a href="">Editar mi perfil</a></li>
+            <li><a href="{{url_for('editar_perfil')}}">Editar mi perfil</a></li>
             <li>
                 <form action="{{ url_for('eliminar_perfil') }}" method="POST">
                     <button type="submit" onclick="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?')">Eliminar mi cuenta</button>

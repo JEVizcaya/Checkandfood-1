@@ -362,6 +362,115 @@ def home_clientes():
 
 # Ruta para editar perfil
  
+@app.route('/editar_perfil', methods=['GET', 'POST'])
+def editar_perfil():
+    if 'customer_id' not in session:
+        flash("Debes iniciar sesión para editar tu perfil.", "warning")
+        return redirect('/login_clientes')
+
+    customer_id = session['customer_id']
+    connection = db.get_connection()
+    cursor=connection.cursor()
+    
+
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+        password = request.form['password']
+
+        try:
+            # Verificar si se ingresó una nueva contraseña
+            if password:
+                hashed_password = generate_password_hash(password)
+                cursor.execute(
+                    "UPDATE customer SET name=%s, email=%s, phone_number=%s, password=%s WHERE customer_id=%s",
+                    (name, email, phone_number, hashed_password, customer_id)
+                )
+            else:
+                cursor.execute(
+                    "UPDATE customer SET name=%s, email=%s, phone_number=%s WHERE customer_id=%s",
+                    (name, email, phone_number, customer_id)
+                )
+
+            connection.commit()
+            flash("Perfil actualizado con éxito.", "success")
+            return redirect('/home_clientes')
+
+        except pymysql.MySQLError as e:
+            db.get_connection.rollback()
+            flash(f"Error al actualizar el perfil: {str(e)}", "danger")
+
+    # Obtener datos actuales del usuario
+    cursor.execute("SELECT name, email, phone_number FROM customer WHERE customer_id=%s", (customer_id,))
+    customer = cursor.fetchone()
+    
+    return render_template('editar_perfil.html', customer=customer)
+
+# Ruta para mis reservas
+
+@app.route('/mis_reservas')
+def mis_reservas():
+    if 'customer_id' not in session:
+        flash("Debes iniciar sesión para ver tus reservas.", "warning")
+        return redirect('/login_clientes')
+
+    customer_id = session['customer_id']
+    
+    try:
+        connection = db.get_connection()
+        cursor = connection.cursor()
+
+        # Consultar las reservas del usuario
+        cursor.execute("""
+            SELECT r.reserve_id, r.reserve_time, r.number_of_people, r.estatus, 
+                   res.name AS restaurant_name, t.start_time, t.end_time
+            FROM reserve r
+            JOIN restaurant res ON r.restaurant_id = res.restaurant_id
+            JOIN time_slot t ON r.time_slot_id = t.time_slot_id
+            WHERE r.customer_id = %s
+            ORDER BY r.reserve_time DESC
+        """, (customer_id,))
+        
+        reservas = cursor.fetchall()
+
+    except Exception as e:
+        flash(f"Error al obtener reservas: {str(e)}", "danger")
+        reservas = []
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+    return render_template('mis_reservas.html', reservas=reservas)
+
+# Ruta para cancelar una reserva
+
+@app.route('/cancelar_reserva/<int:reserve_id>', methods=['POST'])
+def cancelar_reserva(reserve_id):
+    if 'customer_id' not in session:
+        return redirect(url_for('login_clientes'))  # Solo redirige si no hay sesión
+
+    try:
+        connection = db.get_connection()
+        with connection.cursor() as cursor:
+            # Cambiar el estado en lugar de eliminar
+            sql = "UPDATE reserve SET estatus = 'cancelada' WHERE reserve_id = %s AND customer_id = %s"
+            cursor.execute(sql, (reserve_id, session['customer_id']))
+        connection.commit()
+        flash("Reserva cancelada con éxito.", "success")
+    except Exception as e:
+        flash(f"Error al cancelar la reserva: {e}", "danger")
+    finally:
+        connection.close()
+
+    return redirect(url_for('mis_reservas'))  # Asegúrate de que 'mis_reservas' está definida
+
+
+
+
+
+
 
 
 # Ruta para eliminar Perfil
