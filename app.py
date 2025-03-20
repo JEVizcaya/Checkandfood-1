@@ -15,6 +15,7 @@ def home():
 
 
 # Ruta para registro de restaurantes
+
 @app.route('/registro_restaurantes', methods=['GET', 'POST'])
 def registro_restaurantes():
     if request.method == 'POST':
@@ -46,6 +47,7 @@ def registro_restaurantes():
 
 
 # Ruta para login de restaurantes
+
 @app.route('/login_restaurantes', methods=['GET', 'POST'])
 def login_restaurantes():
     if request.method == 'POST':
@@ -75,6 +77,7 @@ def login_restaurantes():
 
 
 # Ruta para registro de clientes
+
 @app.route('/registro_clientes', methods=['GET', 'POST'])
 def registro_clientes():
     if request.method == 'POST':
@@ -104,6 +107,7 @@ def registro_clientes():
 
 
 # Ruta para login de clientes
+
 @app.route('/login_clientes', methods=['GET', 'POST'])
 def login_clientes():
     if request.method == 'POST':
@@ -115,13 +119,13 @@ def login_clientes():
             with connection.cursor() as cursor:
                 sql = "SELECT * FROM customer WHERE email=%s"
                 cursor.execute(sql, (email,))
-                user = cursor.fetchone()
+                customer = cursor.fetchone()
                 connection.close()
 
-            if user and check_password_hash(user['password'], password):
-                session['user_id'] = user['customer_id']
-                session['user_name'] = user['name']
-                return redirect(url_for('dashboard_clientes'))
+            if customer and check_password_hash(customer['password'], password):
+                session['customer_id'] = customer['customer_id']
+                session['customer_name'] = customer['name']
+                return redirect(url_for('home_clientes'))
             else:
                 return render_template('login_clientes.html', mensaje="Usuario o contraseña inválidos")
         except Exception as e:
@@ -130,6 +134,7 @@ def login_clientes():
 
 
 # Ruta home_restaurantes
+
 @app.route('/home_restaurantes')
 def home_restaurantes():
     if 'restaurant_id' not in session:
@@ -148,6 +153,7 @@ def home_restaurantes():
 
 
 # Ruta para ver reservas restaurante
+
 @app.route('/reservas_restaurante')
 def reservas_restaurante():
     if 'restaurant_id' not in session:
@@ -167,14 +173,18 @@ def reservas_restaurante():
         reservas = cursor.fetchall()
 
     connection.close()
+    
     # Si no hay reservas, pasamos una variable adicional al template para mostrar el mensaje
+    
     if not reservas:
         reservas_vacias = True
     else:
         reservas_vacias = False
 
     return render_template('reservas_restaurante.html', reservas=reservas, reservas_vacias=reservas_vacias)
+
 # Aceptar reservas
+
 @app.route('/aceptar_reserva/<int:reserva_id>', methods=['POST'])
 def aceptar_reserva(reserva_id):
     if 'restaurant_id' not in session:
@@ -183,7 +193,9 @@ def aceptar_reserva(reserva_id):
     restaurant_id = session['restaurant_id']
     connection = db.get_connection()
     with connection.cursor() as cursor:
+        
         # Actualiza el estado de la reserva a 'aceptada'
+        
         query = """
         UPDATE reserve
         SET estatus = 'aceptada'
@@ -195,7 +207,9 @@ def aceptar_reserva(reserva_id):
     connection.close()
     flash('Reserva aceptada exitosamente.', 'success')
     return redirect(url_for('reservas_restaurante'))
+
 # Rechazar reservas
+
 @app.route('/rechazar_reserva/<int:reserva_id>', methods=['POST'])
 def rechazar_reserva(reserva_id):
     if 'restaurant_id' not in session:
@@ -204,7 +218,9 @@ def rechazar_reserva(reserva_id):
     restaurant_id = session['restaurant_id']
     connection = db.get_connection()
     with connection.cursor() as cursor:
+        
         # Actualiza el estado de la reserva a 'rechazada'
+        
         query = """
         UPDATE reserve
         SET estatus = 'rechazada'
@@ -216,11 +232,8 @@ def rechazar_reserva(reserva_id):
     connection.close()
     flash('Reserva rechazada exitosamente.', 'danger')
     return redirect(url_for('reservas_restaurante'))
-   
-
-
     
- # Ruta para editar restaurante
+# Ruta para editar restaurante
  
 @app.route('/editar_restaurante', methods=['GET', 'POST'])
 def editar_restaurante():
@@ -242,6 +255,7 @@ def editar_restaurante():
             speciality = request.form['speciality']
             
             # Actualizar los datos del restaurante
+            
             with connection.cursor() as cursor:
                 cursor.execute("""
                     UPDATE restaurant 
@@ -250,7 +264,9 @@ def editar_restaurante():
                 """, (name, web, address, capacity, phone_number, type, description, speciality, restaurant_id))
             connection.commit()
             flash('Restaurante actualizado exitosamente', 'success')
+            
         # Si el formulario de franjas horarias es el que fue enviado
+        
         elif 'start_time' in request.form and 'end_time' in request.form:
             start_time = request.form['start_time']
             end_time = request.form['end_time']
@@ -274,6 +290,7 @@ def editar_restaurante():
         restaurant = cursor.fetchone()
 
         # Obtener las franjas horarias actuales del restaurante
+        
         cursor.execute("SELECT * FROM time_slot WHERE restaurant_id = %s", (restaurant_id,))
         time_slots = cursor.fetchall()
 
@@ -281,6 +298,7 @@ def editar_restaurante():
     return render_template('editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots)
 
 # Ruta para eliminar una franja horaria
+
 @app.route('/eliminar_franja', methods=['POST'])
 def eliminar_franja():
     if 'restaurant_id' not in session:
@@ -293,7 +311,9 @@ def eliminar_franja():
 
     try:
         with connection.cursor() as cursor:
+            
             # Eliminar la franja horaria de la base de datos
+            
             cursor.execute("DELETE FROM time_slot WHERE time_slot_id = %s AND restaurant_id = %s", (time_slot_id, restaurant_id))
             connection.commit()
             flash('Franja horaria eliminada exitosamente', 'success')
@@ -304,7 +324,6 @@ def eliminar_franja():
     connection.close()
 
     return redirect(url_for('editar_restaurante'))  # Redirige de nuevo a la página de edición del restaurante
-
 
 # Ruta para eliminar Restaurante
 
@@ -325,112 +344,46 @@ def eliminar_restaurante():
     flash('Restaurante eliminado exitosamente', 'danger')
     return redirect(url_for('login_restaurantes'))  # Redirige a la página de login
 
+# Ruta para home_clientes
+
+@app.route('/home_clientes')
+def home_clientes():
+    if 'customer_id' not in session:
+        return redirect(url_for('login_clientes'))  # Redirige al login si no está autenticado
     
+    customer_id = session['customer_id']
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM customer WHERE customer_id = %s", (customer_id,))
+        customer = cursor.fetchone()
 
-    
+    connection.close()
+    return render_template('home_clientes.html', customer=customer)
 
-# Ruta para el dashboard del cliente (ejemplo de página de inicio después de login)
-@app.route('/dashboard_clientes', methods=['GET', 'POST'])
-def dashboard_clientes():
-    if 'user_id' not in session:  # Si el cliente no está logueado
-        return redirect(url_for('login_clientes'))
-
-    try:
-        # Obtén el ID del cliente de la sesión
-        customer_id = session['user_id']
-
-        # Conexión a la base de datos
-        connection = db.get_connection()
-        with connection.cursor() as cursor:
-            # Obtener las reservas activas del cliente
-            sql = """
-               SELECT r.reserve_id, r.reserve_time, r.number_of_people, r.estatus
-    FROM reserve r
-    JOIN time_slot ts ON r.time_slot_id = ts.time_slot_id
-    WHERE r.customer_id = %s AND r.estatus = 'activa'
-    ORDER BY r.reserve_time
-            """
-            cursor.execute(sql, (customer_id,))
-            reservas = cursor.fetchall()  # Obtener todas las reservas activas
-
-        connection.close()
-
-        # Renderizar la plantilla y pasar las reservas activas
-        return render_template('dashboard_clientes.html', reservas=reservas)
-
-    except Exception as e:
-        return f"Ha ocurrido un error en la base de datos: {e}"
-    
-
-#reservas
-@app.route('/reservar', methods=['GET', 'POST'])
-def reservar():
-    if 'user_id' not in session:
-        return redirect(url_for('login_clientes'))  # Redirige al login si no está logueado
-
-    # Obtener la lista de restaurantes disponibles
-    try:
-        connection = db.get_connection()
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT restaurant_id, name FROM restaurant")
-            restaurantes = cursor.fetchall()
-            connection.close()
-    except Exception as e:
-        return f"Error al obtener restaurantes: {e}"
-
-    # Si el formulario es enviado (POST)
-    if request.method == 'POST':
-        restaurant_id = request.form['restaurant_id']
-        time_slot_id = request.form['time_slot_id']
-        number_of_people = request.form['number_of_people']
-
-        # Verificar disponibilidad (esto puede incluir un procedimiento para comprobar capacidad)
-        try:
-            connection = db.get_connection()
-            with connection.cursor() as cursor:
-                # Primero obtenemos la capacidad máxima del restaurante
-                cursor.execute("""SELECT capacity FROM restaurant WHERE restaurant_id = %s""", (restaurant_id,))
-                capacity = cursor.fetchone()[0]
-
-                if not capacity:
-                    connection.close()
-                    return "No se encontró la capacidad del restaurante."
-
-                capacity = capacity[0]
-                print(f"Capacidad máxima del restaurante: {capacity}")
-
-                # Verificar las reservas ya existentes y la capacidad total para la franja horaria seleccionada
-                cursor.execute("""SELECT SUM(number_of_people) FROM reserve WHERE restaurant_id = %s AND time_slot_id = %s""", (restaurant_id, time_slot_id))
-                total_reserved = cursor.fetchone()[0] or 0  # Si no hay reservas, asumimos que es 0
-
-                print(f"Total de personas reservadas en la franja horaria: {total_reserved}")
-                print(f"Total personas + nuevas reservas: {total_reserved + int(number_of_people)}")
-
-                if total_reserved + int(number_of_people) <= capacity:
-                    # Proceder con la reserva
-                    print(f"Inserting reservation: restaurant_id={restaurant_id}, customer_id={session['user_id']}, time_slot_id={time_slot_id}, number_of_people={number_of_people}")
-
-                    cursor.execute("""INSERT INTO reserve (restaurant_id, customer_id, time_slot_id, number_of_people, reserve_time, estatus) 
-                                      VALUES (%s, %s, %s, %s, NOW(), 'activa')""", 
-                                      (restaurant_id, session['user_id'], time_slot_id, number_of_people))
-                    connection.commit()
-                    connection.close()
-                    return redirect(url_for('dashboard_clientes'))  # Redirige al dashboard del cliente
-                else:
-                    connection.close()
-                    return "No hay suficiente espacio para la cantidad de personas en esta franja horaria."
-
-        except Exception as e:
-            connection.close()
-            return f"Error al realizar la reserva: {e}"
-
-    # Si el método es GET, muestra los restaurantes y franjas horarias
-    return render_template('reservar.html', restaurantes=restaurantes)
+# Ruta para editar perfil
+ 
 
 
+# Ruta para eliminar Perfil
 
+@app.route('/eliminar_perfil', methods=['POST'])
+def eliminar_perfil():
+    if 'customer_id' not in session:
+        return redirect(url_for('login_clientes'))  # Redirige al login si no está autenticado
 
-    # Ruta para logout
+    customer_id = session['customer_id']
+    connection = db.get_connection()
+
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM customer WHERE customer_id = %s", (customer_id,))
+        connection.commit()
+
+    connection.close()
+    session.pop('customer_id', None)  # Elimina la sesión del restaurante
+    flash('Perfil eliminado exitosamente', 'danger')
+    return redirect(url_for('login_clientes'))  # Redirige a la página de login
+
+# Ruta para logout
 @app.route('/logout')
 def logout():
     session.clear()

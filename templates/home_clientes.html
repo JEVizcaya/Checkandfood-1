@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes/home_clientes.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <h1>Hola, {{customer.name}}:</h1>
+            <a href="{{ url_for('logout')}}"><button type="button">Cerrar Sesión</button></a>
+        </nav>
+        <h2>¿Qué te gustaría hacer?</h2>
+        <ul>
+            <li><a href="">Ver mis reservas</a></li>
+            <li><a href="">Realizar una reserva</a></li>
+            <li><a href="">Editar mi perfil</a></li>
+            <li>
+                <form action="{{ url_for('eliminar_perfil') }}" method="POST">
+                    <button type="submit" onclick="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?')">Eliminar mi cuenta</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
