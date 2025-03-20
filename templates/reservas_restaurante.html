@@ -41,21 +41,23 @@
         </thead>
         <tbody>
             {% for reserva in reservas %}
-            <tr>
-                <td>{{ reserva.name }}</td> <!-- Nombre del cliente -->
-                <td>{{ reserva.reserve_time }}</td> <!-- Fecha y hora de la reserva -->
-                <td>{{ reserva.number_of_people }}</td> <!-- Número de personas en la reserva -->
-                <td>{{ reserva.start_time }}</td> <!-- Hora de inicio -->
-                <td>{{ reserva.estatus }}</td> <!-- Estado de la reserva -->
+            <tr class="{% if reserva.estatus == 'cancelada' or reserva.estatus == 'rechazada' %}cancelada{% endif %}">
+                <td>{{ reserva.name }}</td> 
+                <td>{{ reserva.reserve_time }}</td> 
+                <td>{{ reserva.number_of_people }}</td> 
+                <td>{{ reserva.start_time }}</td> 
+                <td>{{ reserva.estatus }}</td> 
                 <td>
-                    <form action="{{ url_for('aceptar_reserva', reserva_id=reserva.reserve_id) }}" method="POST"
-                        style="display: inline;">
-                        <button type="submit" class="aceptar">Aceptar</button>
-                    </form>
-                    <form action="{{ url_for('rechazar_reserva', reserva_id=reserva.reserve_id) }}" method="POST"
-                        style="display: inline;">
-                        <button type="submit" class="rechazar">Rechazar</button>
-                    </form>
+                    {% if reserva.estatus == 'pendiente' %}
+                        <form action="{{ url_for('aceptar_reserva', reserva_id=reserva.reserve_id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="aceptar">Aceptar</button>
+                        </form>
+                        <form action="{{ url_for('rechazar_reserva', reserva_id=reserva.reserve_id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="rechazar">Rechazar</button>
+                        </form>
+                    {% else %}
+                        <span class="text-muted">No modificable</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
