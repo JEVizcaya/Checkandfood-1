@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/clientes/food_types.css')}}">
+</head>
+<body>
+    <div class="container">
+        
+        <header><h1>Tipo de Cocina</h1></header>
+        <section>
+            <div class="tipos_cocina">
+                {% for foods in foods %}
+                    <a href="{{ url_for('restaurantes', food_id=foods.type) }}">
+                        <button class="color-{{ loop.index }}" type="button"><span>{{ foods.type }}</span></button>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -82,6 +82,44 @@ h1 {
     border-radius: 5px;
     box-sizing: border-box;
 }
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: white;
+    color: #333;
+    appearance: none; /* Oculta el estilo nativo del select */
+    cursor: pointer;
+}
+
+/* Agregar una pequeña flecha para el select */
+.form-group select:after {
+    content: '▼';
+    font-size: 1.1em;
+    color: #555;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Estilo cuando el select está en foco */
+.form-group select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Opciones del select */
+.form-group select option {
+    font-size: 1em;
+    padding: 10px;
+    background: white;
+}
+
 
 .btn-submit {
     padding: 12px 25px;

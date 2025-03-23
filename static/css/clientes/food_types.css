@@ -1,0 +1,187 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Main container */
+.container {
+    width: 70%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+/* Header styles */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: 600;
+    color: #2d3e50;
+}
+
+/* Section styles */
+section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    
+}
+
+/* Button styles */
+.tipos_cocina {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* General button styles */
+button {
+    width: 200px;
+    height: 200px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color:floralwhite;
+    text-align: center;
+    line-height: 1.4em;
+    position: relative; /* Position relative to allow pseudo-element */
+    background-size: cover; /* Ensures the image fills the button */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+/* Dark overlay for better text contrast */
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3); /* Dark overlay */
+    border-radius: 10px;
+    z-index: 1; /* Ensure overlay is behind text */
+}
+
+/* Text styling */
+button span {
+    position: relative;
+    z-index: 2; /* Ensure text is above the overlay */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow to improve readability */
+}
+
+
+button:hover {
+    transform: scale(1.05);
+}
+
+
+
+/* Different background colors for each button using the dynamic class */
+.color-1 {
+    background-color: #3498db; /* Blue */
+    background-image: url('/static/img/tipo_comida/mediterranea.jpeg');
+   
+    
+    
+}
+
+.color-2 {
+    background-color: #e74c3c; /* Red */
+}
+
+.color-3 {
+    background-color: #2ecc71; /* Green */
+}
+
+.color-4 {
+    background-color: #f39c12; /* Yellow */
+}
+
+.color-5 {
+    background-color: #9b59b6; /* Purple */
+}
+
+.color-6 {
+    background-color: #16a085; /* Teal */
+}
+
+.color-7 {
+    background-color: #f1c40f; /* Yellow */
+}
+
+.color-8 {
+    background-color: #e67e22; /* Orange */
+}
+
+.color-9 {
+    background-color: #d35400; /* Dark Orange */
+}
+
+.color-10 {
+    background-color: #8e44ad; /* Purple */
+}
+
+.color-11 {
+    background-color: #34495e; /* Dark Gray */
+}
+
+.color-12 {
+    background-color: #1abc9c; /* Light Teal */
+}
+
+.color-13 {
+    background-color: #2980b9; /* Light Blue */
+}
+
+.color-14 {
+    background-color: #27ae60; /* Dark Green */
+}
+
+.color-15 {
+    background-color: #c0392b; /* Dark Red */
+}
+
+.color-16 {
+    background-color: #7f8c8d; /* Gray */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    button {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    button {
+        width: 120px;
+        height: 120px;
+    }
+}

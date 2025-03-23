@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Restaurantes</h1>
+    
+    <!-- Iterar sobre la lista de restaurantes -->
+    {% for restaurants in restaurants %}
+        <h1>{{ restaurants.name }}</h1>  <!-- Accedemos al nombre del restaurante -->
+    {% endfor %}
+    
+</body>
+</html>

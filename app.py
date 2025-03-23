@@ -25,7 +25,7 @@ def registro_restaurantes():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         direccion = request.form['address']
-        capacidad = request.form['capacity']
+        
 
         if password == confirm_password:
             hashed_password = generate_password_hash(password)
@@ -33,8 +33,8 @@ def registro_restaurantes():
             try:
                 connection = db.get_connection()
                 with connection.cursor() as cursor:
-                    sql = "INSERT INTO restaurant (name, email, password, phone_number, address, capacity) VALUES (%s, %s, %s, %s, %s, %s)"
-                    cursor.execute(sql, (nombre, email, hashed_password, telefono, direccion, capacidad))
+                    sql = "INSERT INTO restaurant (name, email, password, phone_number, address) VALUES (%s, %s, %s, %s, %s)"
+                    cursor.execute(sql, (nombre, email, hashed_password, telefono, direccion))
                     connection.commit()
                 connection.close()
                 return redirect(url_for('login_restaurantes'))
@@ -245,58 +245,57 @@ def editar_restaurante():
     connection = db.get_connection()
 
     if request.method == 'POST':
-        if 'name' in request.form:  # Esto se aplica solo al formulario de editar el restaurante
+        if 'name' in request.form:  # Formulario de editar restaurante
             name = request.form['name']
             web = request.form['web']
             address = request.form['address']
-            capacity = request.form['capacity']
             phone_number = request.form['phone_number']
-            type = request.form['type']
+            capacity=request.form['capacity']
+            food_id = request.form['food_id']
             description = request.form['description']
             speciality = request.form['speciality']
-            
+
             # Actualizar los datos del restaurante
-            
             with connection.cursor() as cursor:
                 cursor.execute("""
                     UPDATE restaurant 
-                    SET name = %s, web= %s, address = %s, capacity = %s, phone_number = %s, type=%s, description=%s, speciality=%s 
+                    SET name = %s, web = %s, address = %s, phone_number = %s, capacity=%s,
+                        food_id = %s, description = %s, speciality = %s 
                     WHERE restaurant_id = %s
-                """, (name, web, address, capacity, phone_number, type, description, speciality, restaurant_id))
+                """, (name, web, address, phone_number,capacity, food_id, description, speciality, restaurant_id))
             connection.commit()
             flash('Restaurante actualizado exitosamente', 'success')
-            
-        # Si el formulario de franjas horarias es el que fue enviado
-        
+
         elif 'start_time' in request.form and 'end_time' in request.form:
+            # Agregar nueva franja horaria
             start_time = request.form['start_time']
             end_time = request.form['end_time']
-            
             with connection.cursor() as cursor:
                 cursor.execute("""
                     INSERT INTO time_slot (restaurant_id, start_time, end_time)
                     VALUES (%s, %s, %s)
                 """, (restaurant_id, start_time, end_time))
-            
             connection.commit()
             flash('Franja horaria agregada exitosamente', 'success')
-        
-        
+
         connection.close()
-        
         return redirect(url_for('editar_restaurante'))
 
+    # Obtener información del restaurante
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM restaurant WHERE restaurant_id = %s", (restaurant_id,))
         restaurant = cursor.fetchone()
 
         # Obtener las franjas horarias actuales del restaurante
-        
         cursor.execute("SELECT * FROM time_slot WHERE restaurant_id = %s", (restaurant_id,))
         time_slots = cursor.fetchall()
 
+        # Obtener los tipos de comida para el menú desplegable
+        cursor.execute("SELECT * FROM food")
+        food_types = cursor.fetchall()
+
     connection.close()
-    return render_template('editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots)
+    return render_template('editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots, food_types=food_types)
 
 # Ruta para eliminar una franja horaria
 
@@ -459,6 +458,7 @@ def cancelar_reserva(reserve_id):
             sql = "UPDATE reserve SET estatus = 'cancelada' WHERE reserve_id = %s AND customer_id = %s"
             cursor.execute(sql, (reserve_id, session['customer_id']))
         connection.commit()
+        
         flash("Reserva cancelada con éxito.", "success")
     except Exception as e:
         flash(f"Error al cancelar la reserva: {e}", "danger")
@@ -487,6 +487,34 @@ def eliminar_perfil():
     flash('Perfil eliminado exitosamente', 'danger')
     return redirect(url_for('login_clientes'))  # Redirige a la página de login
 
+# Ruta para tipos de comida
+@app.route('/tipos_comida')
+def tipos_comida():
+    
+    connection = db.get_connection()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT type FROM food")
+        foods = cursor.fetchall()
+        
+
+    connection.close()
+    return render_template('food_types.html', foods=foods)
+    
+# Ruta para restaurantes
+
+@app.route('/restaurantes/<food_id>')
+def restaurantes(food_id):
+    connection=db.get_connection()
+    with connection.cursor() as cursor:
+        cursor.execute("""select r.name from food f
+            join restaurant r on f.food_id=r.food_id
+            where f.type=%s""", (food_id,))
+        restaurants = cursor.fetchall()
+    connection.close()
+    return render_template('restaurantes.html', restaurants=restaurants, food_id=food_id)
+        
+     
+
 # Ruta para logout
 @app.route('/logout')
 def logout():
@@ -495,7 +523,7 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 
 

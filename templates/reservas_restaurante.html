@@ -53,7 +53,7 @@
                             <button type="submit" class="aceptar">Aceptar</button>
                         </form>
                         <form action="{{ url_for('rechazar_reserva', reserva_id=reserva.reserve_id) }}" method="POST" style="display: inline;">
-                            <button type="submit" class="rechazar">Rechazar</button>
+                            <button type="submit" class="rechazar" onclick="return confirm('¿Estás seguro de que rechazar esta reserva?')">Rechazar</button>
                         </form>
                     {% else %}
                         <span class="text-muted">No modificable</span>

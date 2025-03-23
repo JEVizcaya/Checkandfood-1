@@ -45,7 +45,7 @@
 
                     {% if reserva.estatus == 'pendiente' or reserva.estatus == 'aceptada' %}
                     <form action="{{ url_for('cancelar_reserva', reserve_id=reserva.reserve_id) }}" method="post">
-                        <button type="submit" class="rechazar">Cancelar</button>
+                        <button type="submit" class="rechazar" onclick="return confirm('¿Estás seguro de que quieres cancelar esta reserva?')">Cancelar</button>
                     </form>
                 {% else %}
                     <span class="text-muted">No modificable</span>

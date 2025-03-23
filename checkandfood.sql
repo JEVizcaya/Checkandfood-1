@@ -34,6 +34,39 @@ CREATE TABLE `customer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `customer`
+--
+
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `food`
+--
+
+DROP TABLE IF EXISTS `food`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `food` (
+  `food_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  PRIMARY KEY (`food_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `food`
+--
+
+LOCK TABLES `food` WRITE;
+/*!40000 ALTER TABLE `food` DISABLE KEYS */;
+INSERT INTO `food` VALUES (1,'Mediterranea'),(2,'Española'),(3,'Italiana'),(4,'Japonesa'),(5,'Mexicana'),(6,'Francesa'),(7,'China'),(8,'India'),(9,'Argentina'),(10,'Thailandesa'),(11,'Americana'),(12,'Vegana'),(13,'Koreana'),(14,'Griega'),(15,'Otras');
+/*!40000 ALTER TABLE `food` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reserve`
 --
 
@@ -53,8 +86,17 @@ CREATE TABLE `reserve` (
   KEY `time_slot_id` (`time_slot_id`),
   CONSTRAINT `reserve_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `reserve_ibfk_3` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reserve`
+--
+
+LOCK TABLES `reserve` WRITE;
+/*!40000 ALTER TABLE `reserve` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reserve` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `restaurant`
@@ -71,14 +113,25 @@ CREATE TABLE `restaurant` (
   `address` varchar(255) NOT NULL,
   `capacity` int(4) NOT NULL,
   `phone_number` varchar(14) NOT NULL,
-  `type` varchar(45) DEFAULT NULL,
   `description` tinytext DEFAULT NULL,
   `speciality` tinytext DEFAULT NULL,
   `web` varchar(45) DEFAULT NULL,
+  `food_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`restaurant_id`),
-  UNIQUE KEY `username_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  UNIQUE KEY `username_UNIQUE` (`email`),
+  KEY `food_id` (`food_id`),
+  CONSTRAINT `restaurant_ibfk_1` FOREIGN KEY (`food_id`) REFERENCES `food` (`food_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `restaurant`
+--
+
+LOCK TABLES `restaurant` WRITE;
+/*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
+/*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `time_slot`
@@ -97,8 +150,17 @@ CREATE TABLE `time_slot` (
   KEY `restaurant_id` (`restaurant_id`),
   KEY `fk_reserva` (`reserve_id`),
   CONSTRAINT `fk_reserva` FOREIGN KEY (`reserve_id`) REFERENCES `reserve` (`reserve_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `time_slot`
+--
+
+LOCK TABLES `time_slot` WRITE;
+/*!40000 ALTER TABLE `time_slot` DISABLE KEYS */;
+/*!40000 ALTER TABLE `time_slot` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -109,4 +171,4 @@ CREATE TABLE `time_slot` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-20  5:03:09
+-- Dump completed on 2025-03-23 16:49:43

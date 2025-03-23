@@ -17,7 +17,7 @@
         <h2>¿Qué te gustaría hacer?</h2>
         <ul>
             <li><a href="{{url_for('mis_reservas')}}">Ver mis reservas</a></li>
-            <li><a href="">Realizar una reserva</a></li>
+            <li><a href="{{url_for('tipos_comida')}}">Realizar una reserva</a></li>
             <li><a href="{{url_for('editar_perfil')}}">Editar mi perfil</a></li>
             <li>
                 <form action="{{ url_for('eliminar_perfil') }}" method="POST">
