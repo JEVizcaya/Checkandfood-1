@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/clientes/restaurantes.css')}}">
 </head>
+
 <body>
-    <h1>Restaurantes</h1>
-    
-    <!-- Iterar sobre la lista de restaurantes -->
-    {% for restaurants in restaurants %}
-        <h1>{{ restaurants.name }}</h1>  <!-- Accedemos al nombre del restaurante -->
-    {% endfor %}
-    
+    <div class="container">
+        <nav>
+            <h1>Restaurantes</h1>
+            <a href="{{url_for('tipos_comida')}}"><button type="submit">Volver</button></a>
+        </nav>
+        
+
+        <!-- Iterar sobre la lista de restaurantes -->
+        {% for restaurants in restaurants %}
+        <a href="{{url_for('reserva_cliente')}}"><button type="submit">{{ restaurants.name }}</button></a>
+        <!-- Accedemos al nombre del restaurante -->
+        {% endfor %}
+    </div>
 </body>
+
 </html>

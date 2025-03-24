@@ -512,7 +512,13 @@ def restaurantes(food_id):
         restaurants = cursor.fetchall()
     connection.close()
     return render_template('restaurantes.html', restaurants=restaurants, food_id=food_id)
+
+@app.route('/reserva_cliente')
+def reserva_cliente():
+    return render_template('reserva_cliente.html')
+    
         
+           
      
 
 # Ruta para logout

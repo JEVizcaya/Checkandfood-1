@@ -1,9 +1,9 @@
-/* General styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 
 body {
@@ -13,102 +13,71 @@ body {
     line-height: 1.6;
 }
 
-/* Main container */
+/* Main Container */
 .container {
-    width: 70%;
-    margin: 0 auto;
+    width: 80%;
+    margin: 30px auto;
     padding: 20px;
-    background-color: white;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
+   
+   
 }
 
-/* Header styles */
-header {
-    text-align: center;
-    margin-bottom: 30px;
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d3e50;
+    color: white;
+    padding: 20px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 20px;
+}
+
+nav button{
+    color: white;
+    background: #3498db;
+    font-size: 1.1em;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 h1 {
-    font-size: 2em;
+    text-align: center;
+    font-size: 1.8em;
     font-weight: 600;
-    color: #2d3e50;
+    margin-bottom: 20px;
 }
 
-/* Section styles */
-section {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    
-}
 
-/* Button styles */
 .tipos_cocina {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    gap: 10px; /* Espacio entre botones */
 }
 
-/* General button styles */
-button {
-    width: 200px;
-    height: 200px;
-    font-size: 1.2em;
-    font-weight: bold;
+.tipos_cocina button {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 100px;
+    border-radius: 5px;
+    padding: 10px; /* Espaciado interno para mejorar la apariencia */
+    font-size: 16px; /* Tamaño del texto */
     border: none;
-    border-radius: 10px;
     cursor: pointer;
-    color:floralwhite;
-    text-align: center;
-    line-height: 1.4em;
-    position: relative; /* Position relative to allow pseudo-element */
-    background-size: cover; /* Ensures the image fills the button */
-    background-position: center;
     background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
+    
+    background-size: cover;
+    transition: background-color 0.3s; /* Animación de cambio de color */
+
 }
-
-/* Dark overlay for better text contrast */
-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3); /* Dark overlay */
-    border-radius: 10px;
-    z-index: 1; /* Ensure overlay is behind text */
-}
-
-/* Text styling */
-button span {
-    position: relative;
-    z-index: 2; /* Ensure text is above the overlay */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow to improve readability */
-}
-
-
-button:hover {
-    transform: scale(1.05);
-}
-
-
 
 /* Different background colors for each button using the dynamic class */
 .color-1 {
     background-color: #3498db; /* Blue */
     background-image: url('/static/img/tipo_comida/mediterranea.jpeg');
-   
-    
-    
+  
 }
 
 .color-2 {
