@@ -15,7 +15,8 @@ body {
 
 /* Main container */
 .container {
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
@@ -24,43 +25,47 @@ body {
     margin-top: 30px;
 }
 
-nav{
+/* Navigation */
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #2d3e50;
     color: white;
     padding: 20px;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que los elementos se acomoden en pantallas pequeñas */
 }
 
-nav .btn-volver{
+/* Botón en el navbar */
+nav button {
     color: white;
     background: #3498db;
-    font-size: 1.1em;
-    text-decoration: none;
+    font-size: 1em;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-h1 {
-    text-align: center;
-    font-size: 1.8em;
-    font-weight: 600;
-    margin-bottom: 20px;
+/* Efecto hover */
+nav button:hover {
+    background: #2980b9;
+    transform: scale(1.05);
 }
 
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+    }
 
-/* Main container */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
+    nav button {
+        margin-top: 10px;
+    }
 }
 
 h1 {
@@ -80,7 +85,7 @@ table {
 /* Center text in table headers and cells */
 table th, table td {
     padding: 12px;
-    text-align: center; /* Centro el contenido */
+    text-align: center;
     border: 1px solid #ddd;
 }
 
@@ -97,11 +102,41 @@ table tr:hover {
     background-color: #f1f1f1;
 }
 
+/* Responsive table */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
 
-/* Action buttons */
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    td {
+        text-align: left;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+    }
+}
+
+/* Buttons */
 button {
     padding: 8px 16px;
-    font-size: 1.1em;
+    font-size: 1em;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -111,12 +146,12 @@ button {
 
 /* Specific button styles */
 button.aceptar {
-    background-color: #28a745; /* Green for accept */
+    background-color: #28a745;
     color: white;
 }
 
 button.rechazar {
-    background-color: #e74c3c; /* Red for reject */
+    background-color: #e74c3c;
     color: white;
 }
 
@@ -128,6 +163,14 @@ button:focus {
     outline: none;
 }
 
+/* Responsive buttons */
+@media (max-width: 480px) {
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
 /* Flash messages */
 ul {
     list-style: none;
@@ -135,43 +178,31 @@ ul {
     margin: 0;
 }
 
-li.success {
-    background-color: #28a745;
-    color: white;
+li {
     padding: 10px;
     border-radius: 5px;
     margin: 10px 0;
+    text-align: center;
+}
+
+li.success {
+    background-color: #28a745;
+    color: white;
 }
 
 li.danger {
     background-color: #dc3545;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
 }
 
 li.info {
     background-color: #17a2b8;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
 }
 
 li.warning {
     background-color: #ffc107;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-}
-
-.cancelada {
-    text-decoration: line-through;
-    color: gray;
-    text-decoration-thickness: 3px; /* Ajusta el grosor del tachado */
-   
 }
 
 /* Estilos para los mensajes flash */
@@ -181,7 +212,7 @@ li.warning {
     border-radius: 5px;
     font-size: 1.1em;
     opacity: 1;
-    transition: opacity 1s ease-out;  /* Hacemos que la opacidad cambie en 1 segundo */
+    transition: opacity 1s ease-out;
 }
 
 /* Mensajes por categoría */
@@ -203,76 +234,4 @@ li.warning {
 .flash-messages .alert-warning {
     background-color: #ffc107;
     color: white;
-}
-
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .container {
-        width: 90%;
-        padding: 25px;
-    }
-
-    h1 {
-        font-size: 1.6em;
-        margin-bottom: 15px;
-    }
-
-    table th, table td {
-        padding: 10px;
-    }
-
-    button {
-        padding: 10px 20px;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        font-size: 15px;
-    }
-
-    .container {
-        width: 95%;
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 1.4em;
-        margin-bottom: 15px;
-    }
-
-    table th, table td {
-        padding: 10px;
-    }
-
-    button {
-        font-size: 1em;
-        padding: 10px 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        font-size: 14px;
-    }
-
-    h1 {
-        font-size: 1.3em;
-        margin-bottom: 15px;
-    }
-
-    table th, table td {
-        padding: 8px;
-    }
-
-    button {
-        font-size: 1em;
-        padding: 8px 16px;
-    }
-
-    .container {
-        width: 100%;
-        padding: 15px;
-    }
 }

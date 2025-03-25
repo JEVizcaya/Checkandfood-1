@@ -15,10 +15,10 @@ body {
 
 /* Main Container */
 .container {
-    width: 80%;
+    width: 95%;
     margin: 30px auto;
     padding: 20px;
-    background: white;
+    background:linear-gradient(45deg, #009688, transparent);
     border-radius: 8px;
    
    
@@ -32,7 +32,7 @@ nav{
     background-color: #2d3e50;
     color: white;
     padding: 20px;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
@@ -52,26 +52,49 @@ h1 {
 }
 
 
+
 .tipos_cocina {
+    
     display: flex;
-    flex-direction: column; /* Apila los elementos verticalmente */
-    gap: 10px; /* Espacio entre botones */
+    justify-content: center;
+    
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tipos_cocina a {
+    text-decoration: none;
 }
 
 .tipos_cocina button {
-    width: 100%; /* Ocupa todo el ancho disponible */
+    width: 250px;
     height: 100px;
-    border-radius: 5px;
-    padding: 10px; /* Espaciado interno para mejorar la apariencia */
-    font-size: 16px; /* Tamaño del texto */
+    padding: 10px;
     border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
+    transition: transform 0.2s ease-in-out;
     background-repeat: no-repeat;
-    
+    background-position: center;
     background-size: cover;
-    transition: background-color 0.3s; /* Animación de cambio de color */
-
+    
 }
+
+.tipos_cocina button span {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    color: whitesmoke;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.tipos_cocina button:hover {
+    transform: scale(1.05);
+}
+
+
+
 
 /* Different background colors for each button using the dynamic class */
 .color-1 {
@@ -82,62 +105,78 @@ h1 {
 
 .color-2 {
     background-color: #e74c3c; /* Red */
+    background-image: url('/static/img/tipo_comida/española.webp')
 }
 
 .color-3 {
     background-color: #2ecc71; /* Green */
+    background-image: url('/static/img/tipo_comida/italiana.jpeg')
 }
 
 .color-4 {
     background-color: #f39c12; /* Yellow */
+    background-image: url('/static/img/tipo_comida/japonesa.jpeg')
 }
 
 .color-5 {
     background-color: #9b59b6; /* Purple */
+    background-image: url('/static/img/tipo_comida/mexicana.jpeg')
 }
 
 .color-6 {
     background-color: #16a085; /* Teal */
+    background-image: url('/static/img/tipo_comida/francesa.jpg')
 }
 
 .color-7 {
     background-color: #f1c40f; /* Yellow */
+    background-image: url('/static/img/tipo_comida/china.jpg')
 }
 
 .color-8 {
     background-color: #e67e22; /* Orange */
+    background-image: url('/static/img/tipo_comida/india.jpg')
 }
 
 .color-9 {
     background-color: #d35400; /* Dark Orange */
+    background-image: url('/static/img/tipo_comida/argentina.webp')
 }
 
 .color-10 {
     background-color: #8e44ad; /* Purple */
+    background-image: url('/static/img/tipo_comida/tailandesa.jpg')
 }
 
 .color-11 {
     background-color: #34495e; /* Dark Gray */
+    background-image: url('/static/img/tipo_comida/americana.jpg')
 }
 
 .color-12 {
     background-color: #1abc9c; /* Light Teal */
+    background-image: url('/static/img/tipo_comida/vegana.webp')
+
 }
 
 .color-13 {
     background-color: #2980b9; /* Light Blue */
+    background-image: url('/static/img/tipo_comida/coreana.webp')
 }
 
 .color-14 {
     background-color: #27ae60; /* Dark Green */
+    background-image: url('/static/img/tipo_comida/griega.jpeg')
 }
 
 .color-15 {
     background-color: #c0392b; /* Dark Red */
+    background-image: url('/static/img/tipo_comida/peruana.jpeg')
 }
 
 .color-16 {
     background-color: #7f8c8d; /* Gray */
+    background-image: url('/static/img/tipo_comida/otras.jpg')
 }
 
 /* Responsive Design */
@@ -146,6 +185,12 @@ h1 {
         width: 150px;
         height: 150px;
     }
+    nav button {
+        width: 60px;
+        height: 40px;
+        font-size: 1em;
+        padding: 5px 8px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -153,4 +198,12 @@ h1 {
         width: 120px;
         height: 120px;
     }
+    nav button {
+        width: 60px;
+        height: 40px;
+        font-size: 0.9em;
+        padding: 5px 8px;
+    }
+    
+        
 }

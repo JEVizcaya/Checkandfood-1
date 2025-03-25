@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ver Reservas</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/restaurantes/reservas_restaurante.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/restaurantes/editar_restaurantes.css')}}">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 
     <nav>
         <h1>Reservas</h1>
-        <a href="{{ url_for('home_restaurantes') }}" class="btn-volver">Volver</a>
+        <a href="{{ url_for('home_restaurantes') }}"><button type="submit">Volver</button></a>
     </nav>
 
     <!-- Verifica si no hay reservas y muestra un mensaje -->

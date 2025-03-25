@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tipos de Cocina</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/clientes/food_types.css')}}">
 </head>
 
@@ -12,10 +12,10 @@
     <div class="container">
 
         <nav>
-            <h1>Tipo de Cocina</h1>
+            <h2>Tipo de Cocina</h2>
             <a href="{{ url_for ('home_clientes') }}"><button id="submit" type="submit">Volver</button></a>
         </nav>
-        
+       
             <div class="tipos_cocina">
                 {% for foods in foods %}
                 <a href="{{ url_for('restaurantes', food_id=foods.type) }}">
@@ -23,8 +23,8 @@
                 </a>
                 {% endfor %}
             </div>
-            
-       
+
+     
     </div>
 </body>
 
