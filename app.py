@@ -9,7 +9,7 @@ app.secret_key = "123456"
 # Ruta principal (Home)
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home/home.html')
 
 
 
@@ -42,7 +42,7 @@ def registro_restaurantes():
                 return f"Ha ocurrido un error en la base de datos: {e}"
         else:
             return "Las contraseñas no coinciden"
-    return render_template('registro_restaurantes.html')
+    return render_template('login_register/registro_restaurantes.html')
 
 
 
@@ -72,7 +72,7 @@ def login_restaurantes():
                     return redirect(url_for('login_restaurantes', mensaje="Correo o contraseña inválidos"))
         except Exception as e:
             return f"Ha ocurrido un error en la base de datos: {e}"
-    return render_template('login_restaurantes.html')
+    return render_template('login_register/login_restaurantes.html')
 
 
 
@@ -102,7 +102,7 @@ def registro_clientes():
                 return f"Ha ocurrido un error en la base de datos: {e}"
         else:
             return "Las contraseñas no coinciden"
-    return render_template('registro_clientes.html')
+    return render_template('login_register/registro_clientes.html')
 
 
 
@@ -130,7 +130,7 @@ def login_clientes():
                 return render_template('login_clientes.html', mensaje="Usuario o contraseña inválidos")
         except Exception as e:
             return f"Ha ocurrido un error en la base de datos: {e}"
-    return render_template('login_clientes.html')
+    return render_template('login_register/login_clientes.html')
 
 
 # Ruta home_restaurantes
@@ -147,7 +147,7 @@ def home_restaurantes():
         restaurant = cursor.fetchone()
 
     connection.close()
-    return render_template('home_restaurantes.html', restaurant=restaurant)
+    return render_template('restaurantes/home_restaurantes.html', restaurant=restaurant)
 
 
 
@@ -182,7 +182,7 @@ def reservas_restaurante():
     else:
         reservas_vacias = False
 
-    return render_template('reservas_restaurante.html', reservas=reservas, reservas_vacias=reservas_vacias)
+    return render_template('restaurantes/reservas_restaurante.html', reservas=reservas, reservas_vacias=reservas_vacias)
 
 # Aceptar reservas
 
@@ -295,7 +295,7 @@ def editar_restaurante():
         food_types = cursor.fetchall()
 
     connection.close()
-    return render_template('editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots, food_types=food_types)
+    return render_template('restaurantes/editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots, food_types=food_types)
 
 # Ruta para eliminar una franja horaria
 
@@ -358,7 +358,7 @@ def home_clientes():
         customer = cursor.fetchone()
 
     connection.close()
-    return render_template('home_clientes.html', customer=customer)
+    return render_template('clientes/home_clientes.html', customer=customer)
 
 # Ruta para editar perfil
  
@@ -405,7 +405,7 @@ def editar_perfil():
     cursor.execute("SELECT name, email, phone_number FROM customer WHERE customer_id=%s", (customer_id,))
     customer = cursor.fetchone()
     
-    return render_template('editar_perfil.html', customer=customer)
+    return render_template('clientes/editar_perfil.html', customer=customer)
 
 # Ruta para mis reservas
 
@@ -442,7 +442,7 @@ def mis_reservas():
         cursor.close()
         connection.close()
 
-    return render_template('mis_reservas.html', reservas=reservas)
+    return render_template('clientes/mis_reservas.html', reservas=reservas)
 
 # Ruta para cancelar una reserva
 
@@ -498,7 +498,7 @@ def tipos_comida():
         
 
     connection.close()
-    return render_template('food_types.html', foods=foods)
+    return render_template('clientes/food_types.html', foods=foods)
     
 # Ruta para restaurantes
 
@@ -511,11 +511,11 @@ def restaurantes(food_id):
             where f.type=%s""", (food_id,))
         restaurants = cursor.fetchall()
     connection.close()
-    return render_template('restaurantes.html', restaurants=restaurants, food_id=food_id)
+    return render_template('restaurantes/restaurantes.html', restaurants=restaurants, food_id=food_id)
 
 @app.route('/reserva_cliente')
 def reserva_cliente():
-    return render_template('reserva_cliente.html')
+    return render_template('clientes/reserva_cliente.html')
     
         
            
