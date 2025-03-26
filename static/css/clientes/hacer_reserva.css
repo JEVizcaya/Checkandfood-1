@@ -15,7 +15,7 @@ body {
 
 /* Main container */
 .container {
-    width: 80%;
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
@@ -51,28 +51,17 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Estilo para reservas canceladas */
-.cancelada {
-    text-decoration: line-through; /* Tacha el texto */
-    color: #a6a2a2; /* Cambia el color del texto a gris para dar el efecto de cancelación */
-    text-decoration-thickness: 5px; /* Aumenta el grosor del tachado */
-}
+
+
+
 /* Form styles */
 .form-editar {
     margin-bottom: 30px;
 }
-.form-control{
-    width: 100%;
-    padding: 12px;
-    font-size: 1.1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+
 .form-group {
     margin-bottom: 20px;
 }
-
 
 .form-group label {
     display: block;
@@ -80,14 +69,7 @@ h1 {
     margin-bottom: 8px;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    font-size: 1.1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+.form-group input,
 .form-group select {
     width: 100%;
     padding: 12px;
@@ -95,37 +77,20 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+.form-group select {
     background-color: white;
     color: #333;
     appearance: none; /* Oculta el estilo nativo del select */
     cursor: pointer;
 }
 
-/* Agregar una pequeña flecha para el select */
-.form-group select:after {
-    content: '▼';
-    font-size: 1.1em;
-    color: #555;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Estilo cuando el select está en foco */
 .form-group select:focus {
     border-color: #3498db;
     outline: none;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
-
-/* Opciones del select */
-.form-group select option {
-    font-size: 1em;
-    padding: 10px;
-    background: white;
-}
-
 
 .btn-submit {
     padding: 12px 25px;
@@ -144,66 +109,7 @@ h1 {
     background-color: #2980b9;
 }
 
-/* Table styles */
-table {
-    width: 100%;
-    margin-top: 30px;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-table th {
-    background-color: #f4f6f9;
-}
-
-h2, h3 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-}
-
-/* Flex container for franjas horarias and agregar nueva franja */
-.franjas-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.franjas-horarias, .agregar-franja {
-    width: 48%;
-    min-width: 300px;
-}
-
-.franjas-horarias table {
-    width: 100%;
-}
-
-/* Estilo para los botones de eliminar */
-.btn-eliminar {
-    padding: 8px 16px;
-    font-size: 1.1em;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.btn-eliminar:hover {
-    background-color: #c0392b;
-    transform: scale(1.1);
-}
-
-.btn-eliminar:focus {
-    outline: none;
-}
-/* Estilos para los mensajes flash */
+/* Estilo para los mensajes flash */
 .flash-messages .alert {
     padding: 15px;
     margin: 10px 0;
@@ -231,6 +137,23 @@ h2, h3 {
     color: white;
 }
 
+/* Enlace de volver */
+.btn-volver {
+    display: block;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 1.1em;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-volver:hover {
+    background-color: #2980b9;
+}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -256,22 +179,8 @@ h2, h3 {
         font-size: 1.1em;
         padding: 15px;
     }
-
-    table th, table td {
-        padding: 10px;
-    }
-
-    .franjas-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .franjas-horarias, .agregar-franja {
-        width: 100%;
-    }
 }
 
-/* More compact on smaller screens */
 @media (max-width: 768px) {
     body {
         font-size: 15px;
@@ -299,19 +208,6 @@ h2, h3 {
         font-size: 1.1em;
         padding: 15px;
     }
-
-    table th, table td {
-        padding: 10px;
-    }
-
-    .franjas-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .franjas-horarias, .agregar-franja {
-        width: 100%;
-    }
 }
 
 @media (max-width: 480px) {
@@ -337,17 +233,8 @@ h2, h3 {
         padding: 14px;
     }
 
-    table th, table td {
-        padding: 8px;
-    }
-
     .container {
         width: 100%;
         padding: 15px;
-    }
-
-    .franjas-container {
-        flex-direction: column;
-        gap: 10px;
     }
 }

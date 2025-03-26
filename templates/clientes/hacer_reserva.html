@@ -1,32 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hacer Reserva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes/hacer_reserva.css') }}">
 </head>
+
 <body>
-    <h1>Reservar en {{ restaurant.name }}</h1>
-
-    <form action="{{ url_for('hacer_reserva', restaurant_id=restaurant_id) }}" method="POST">
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required>
-
-        <label for="time_slot_id">Horario:</label>
-        <select id="time_slot_id" name="time_slot_id" required>
-            {% for slot in time_slots %}
-                <option value="{{ slot.time_slot_id }}">
-                    {{ slot.start_time }} - {{ slot.end_time }}
-                </option>
+    <div class="container">
+        <!-- Mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for category, message in messages %}
+            <li class="alert {{ category }}">{{ message }}</li>
             {% endfor %}
-        </select>
+        </ul>
+        {% endif %}
+        {% endwith %}
 
-        <label for="personas">Número de Personas:</label>
-        <input type="number" id="personas" name="personas" min="1" required>
+        <!-- Título -->
+        <nav>
+            <h1>Reservar en {{ restaurant.name }}</h1>
+            <a href="{{url_for('home_clientes')}}"><button type="submit">Volver</button></a>
+        </nav>
 
-        <button type="submit">Reservar</button>
-    </form>
 
-    <a href="{{ url_for('home_clientes') }}">Volver al inicio</a>
+        <!-- Formulario de reserva -->
+        <form action="{{ url_for('hacer_reserva', restaurant_id=restaurant_id) }}" method="POST" class="form-editar">
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time_slot_id">Horario:</label>
+                <select id="time_slot_id" name="time_slot_id" required>
+                    {% for slot in time_slots %}
+                    <option value="{{ slot.time_slot_id }}">
+                        {{ slot.start_time }} - {{ slot.end_time }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="personas">Número de Personas:</label>
+                <input type="number" id="personas" name="personas" min="1" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Reservar</button>
+        </form>
+
+       
+    </div>
 </body>
+
 </html>

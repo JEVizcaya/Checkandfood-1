@@ -55,6 +55,13 @@ nav button:hover {
     background: #2980b9;
     transform: scale(1.05);
 }
+/* Estilo para reservas canceladas */
+.cancelada {
+    text-decoration: line-through; /* Tacha el texto */
+    color: #a6a2a2; /* Cambia el color del texto a gris para dar el efecto de cancelación */
+    text-decoration-thickness: 5px; /* Aumenta el grosor del tachado */
+}
+
 
 /* Responsive Navbar */
 @media (max-width: 768px) {
