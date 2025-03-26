@@ -32,6 +32,7 @@
         <thead>
             <tr>
                 <th>Cliente</th>
+                <th>Teléfono</th>
                 <th>Fecha</th>
                 <th>Nº de personas</th>
                 <th>Hora</th>
@@ -43,6 +44,7 @@
             {% for reserva in reservas %}
             <tr class="{% if reserva.estatus == 'cancelada' or reserva.estatus == 'rechazada' %}cancelada{% endif %}">
                 <td>{{ reserva.name }}</td> 
+                <td>{{ reserva.phone_number}}</td>
                 <td>{{ reserva.reserve_time }}</td> 
                 <td>{{ reserva.number_of_people }}</td> 
                 <td>{{ reserva.start_time }}</td> 

@@ -163,7 +163,7 @@ def reservas_restaurante():
     connection = db.get_connection()
     with connection.cursor() as cursor:
         query = """
-        SELECT reserve.reserve_id, customer.name, reserve.number_of_people, reserve.reserve_time, time_slot.start_time, reserve.estatus
+        SELECT reserve.reserve_id, customer.name,customer.phone_number, reserve.number_of_people, reserve.reserve_time, time_slot.start_time, reserve.estatus
         FROM reserve
         JOIN customer ON reserve.customer_id = customer.customer_id
         JOIN time_slot ON reserve.time_slot_id = time_slot.time_slot_id
@@ -359,7 +359,60 @@ def home_clientes():
 
     connection.close()
     return render_template('clientes/home_clientes.html', customer=customer)
+# Ruta para hacer una reserva
 
+@app.route('/hacer_reserva/<int:restaurant_id>', methods=['GET', 'POST'])
+def hacer_reserva(restaurant_id):
+    if 'customer_id' not in session:
+        flash("Debes iniciar sesión para hacer una reserva.", "warning")
+        return redirect(url_for('login_clientes'))
+
+    customer_id = session['customer_id']
+
+    connection = db.get_connection()
+    cursor = connection.cursor()
+
+    # Obtener información del restaurante
+    cursor.execute("SELECT name FROM restaurant WHERE restaurant_id = %s", (restaurant_id,))
+    restaurant = cursor.fetchone()
+
+    # Obtener los horarios disponibles del restaurante
+    cursor.execute("""
+        SELECT time_slot_id, start_time, end_time 
+        FROM time_slot 
+        WHERE restaurant_id = %s
+    """, (restaurant_id,))
+    time_slots = cursor.fetchall()
+
+    if request.method == 'POST':
+        fecha = request.form['fecha']
+        time_slot_id = request.form['time_slot_id']
+        personas = request.form['personas']
+
+        try:
+            # Insertar la reserva en la base de datos
+            cursor.execute("""
+                INSERT INTO reserve (customer_id, restaurant_id, time_slot_id, number_of_people, reserve_time, estatus)
+                VALUES (%s, %s, %s, %s, %s, 'pendiente')
+            """, (customer_id, restaurant_id, time_slot_id, personas, fecha))
+            connection.commit()
+
+            flash('¡Reserva realizada con éxito!', 'success')
+            return redirect(url_for('mis_reservas'))
+
+        except pymysql.MySQLError as e:
+            connection.rollback()
+            flash(f"Error al hacer la reserva: {str(e)}", "danger")
+
+    cursor.close()
+    connection.close()
+
+    return render_template('clientes/hacer_reserva.html', 
+                           restaurant=restaurant, 
+                           restaurant_id=restaurant_id, 
+                           time_slots=time_slots)
+
+    
 # Ruta para editar perfil
  
 @app.route('/editar_perfil', methods=['GET', 'POST'])
@@ -506,16 +559,14 @@ def tipos_comida():
 def restaurantes(food_id):
     connection=db.get_connection()
     with connection.cursor() as cursor:
-        cursor.execute("""select r.name from food f
+        cursor.execute("""select r.restaurant_id, r.name from food f
             join restaurant r on f.food_id=r.food_id
             where f.type=%s""", (food_id,))
         restaurants = cursor.fetchall()
     connection.close()
     return render_template('restaurantes/restaurantes.html', restaurants=restaurants, food_id=food_id)
 
-@app.route('/reserva_cliente')
-def reserva_cliente():
-    return render_template('clientes/reserva_cliente.html')
+
     
         
            

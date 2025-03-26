@@ -17,10 +17,11 @@
         
 
         <!-- Iterar sobre la lista de restaurantes -->
-        {% for restaurants in restaurants %}
-        <a href="{{url_for('reserva_cliente')}}"><button type="submit">{{ restaurants.name }}</button></a>
-        <!-- Accedemos al nombre del restaurante -->
-        {% endfor %}
+        {% for restaurant in restaurants %}
+        <a href="{{url_for('hacer_reserva', restaurant_id=restaurant['restaurant_id'])}}">
+            <button type="submit">{{ restaurant.name }}</button>
+        </a>
+    {% endfor %}
     </div>
 </body>
 
