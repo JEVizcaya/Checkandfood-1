@@ -557,12 +557,16 @@ def tipos_comida():
 
 @app.route('/restaurantes/<food_id>')
 def restaurantes(food_id):
+    
     connection=db.get_connection()
     with connection.cursor() as cursor:
-        cursor.execute("""select r.restaurant_id, r.name from food f
+        cursor.execute("""select r.restaurant_id, r.name,r.address,r.phone_number,r.description,r.speciality from food f
             join restaurant r on f.food_id=r.food_id
             where f.type=%s""", (food_id,))
         restaurants = cursor.fetchall()
+        
+    
+        
     connection.close()
     return render_template('restaurantes/restaurantes.html', restaurants=restaurants, food_id=food_id)
 

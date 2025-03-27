@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Restaurantes</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/clientes/restaurantes.css')}}">
 </head>
 
@@ -14,14 +14,31 @@
             <h1>Restaurantes</h1>
             <a href="{{url_for('tipos_comida')}}"><button type="submit">Volver</button></a>
         </nav>
-        
+        <div class="card">
+            <!-- Iterar sobre la lista de restaurantes -->
+            {% for restaurant in restaurants %}
 
-        <!-- Iterar sobre la lista de restaurantes -->
-        {% for restaurant in restaurants %}
-        <a href="{{url_for('hacer_reserva', restaurant_id=restaurant['restaurant_id'])}}">
-            <button type="submit">{{ restaurant.name }}</button>
-        </a>
-    {% endfor %}
+            <div class="restaurant-card">
+                <h2>{{ restaurant.name }}</h2>
+
+                <!-- Sección de información de contacto -->
+                <div>
+                    <p><strong>Dirección:</strong> {{ restaurant.address }}</p>
+                    <p><strong>Teléfono:</strong> {{ restaurant.phone_number }}</p>
+
+
+                    <p class="description">{{ restaurant.description }}</p>
+                    <p class="specialty">Especialidad: {{ restaurant.speciality }}</p>
+
+                    <!-- Botón para hacer la reserva -->
+                    <a href="{{url_for('hacer_reserva', restaurant_id=restaurant['restaurant_id'])}}">
+                        <button type="submit">Hacer reserva</button>
+                    </a>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
     </div>
 </body>
 

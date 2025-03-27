@@ -1,52 +1,96 @@
-/* General styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* Archivo: static/css/clientes/restaurantes.css */
 
 body {
-    background-color: #f4f6f9;
-    color: #333;
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-/* Main container */
 .container {
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
+   
 }
 
-nav{
+/* Navigation */
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #2d3e50;
+    background-color: rgba(45, 62, 80, 0.9);
     color: white;
     padding: 20px;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
-nav button{
-    color: white;
-    background: #3498db;
-    font-size: 1.1em;
-    
-    border-radius: 5px;
-    padding: 5px;
-}
-
-h1 {
-    text-align: center;
-    font-size: 1.8em;
+nav h1 {
+    font-size: 1.5em;
     font-weight: 600;
-    margin-bottom: 20px;
+}
+
+nav a button {
+    padding: 12px 25px;
+    font-size: 1em;
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+nav a button:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos para las tarjetas de los restaurantes */
+.card{
+    
+   
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    
+   
+    justify-content: space-between;
+    align-items: center; 
+    
+}
+
+.restaurant-card{
+    background-color: aqua;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;  /* Ancho fijo */
+    height: 300px; /* Altura fija para todas las tarjetas */
+
+}
+    
+   
+
+
+
+
+   
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #45a049;
 }
