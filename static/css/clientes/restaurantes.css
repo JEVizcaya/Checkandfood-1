@@ -62,7 +62,9 @@ nav a button:hover {
 }
 
 .restaurant-card{
-    background-color: aqua;
+    background-image: url(static/img/restaurantes/restaurante1.webp);
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 8px;
     padding: 10px;
     margin: 10px;
