@@ -1,10 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pymysql
-import db
+import db, os
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = "123456"
+# Verifica la ruta absoluta de la carpeta 'static'
+import os
+print(os.path.abspath('static'))
+
+
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'img', 'restaurantes')
+app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'webp'}  # Asegúrate de que los tipos de archivo sean correctos
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Ruta principal (Home)
 @app.route('/')
@@ -236,6 +247,7 @@ def rechazar_reserva(reserva_id):
     
 # Ruta para editar restaurante
  
+# Ruta para editar restaurante
 @app.route('/editar_restaurante', methods=['GET', 'POST'])
 def editar_restaurante():
     if 'restaurant_id' not in session:
@@ -250,19 +262,29 @@ def editar_restaurante():
             web = request.form['web']
             address = request.form['address']
             phone_number = request.form['phone_number']
-            capacity=request.form['capacity']
+            capacity = request.form['capacity']
             food_id = request.form['food_id']
             description = request.form['description']
             speciality = request.form['speciality']
+            img_url = None
+
+            # Si se sube una imagen, guardarla en la carpeta estática y obtener su URL
+            if 'img_url' in request.files:
+                img_file = request.files['img_url']
+                if img_file and allowed_file(img_file.filename):
+                    filename = secure_filename(img_file.filename)
+                    img_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    img_url = f'static/img/restaurantes/{filename}'  # Guardar solo la ruta relativa
 
             # Actualizar los datos del restaurante
             with connection.cursor() as cursor:
                 cursor.execute("""
                     UPDATE restaurant 
-                    SET name = %s, web = %s, address = %s, phone_number = %s, capacity=%s,
-                        food_id = %s, description = %s, speciality = %s 
+                    SET name = %s, web = %s, address = %s, phone_number = %s, capacity = %s,
+                        food_id = %s, description = %s, speciality = %s, img_url = %s
                     WHERE restaurant_id = %s
-                """, (name, web, address, phone_number,capacity, food_id, description, speciality, restaurant_id))
+                """, (name, web, address, phone_number, capacity, food_id, description, speciality, img_url, restaurant_id))
             connection.commit()
             flash('Restaurante actualizado exitosamente', 'success')
 
@@ -296,7 +318,6 @@ def editar_restaurante():
 
     connection.close()
     return render_template('restaurantes/editar_restaurantes.html', restaurant=restaurant, time_slots=time_slots, food_types=food_types)
-
 # Ruta para eliminar una franja horaria
 
 @app.route('/eliminar_franja', methods=['POST'])
