@@ -52,6 +52,7 @@ nav button:hover {
     padding: 10px;
     margin: 10px;
     display: flex;   
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center; 
     
@@ -63,7 +64,7 @@ nav button:hover {
     padding: 10px;
     margin: 10px;
     width: 350px;  /* Ancho fijo */
-    height: 350px; /* Altura fija para todas las tarjetas */
+    height: 400px; /* Altura fija para todas las tarjetas */
     
     
    
