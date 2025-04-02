@@ -30,54 +30,6 @@
         {% endif %}
         {% endwith %}
 
-        <form method="POST" enctype="multipart/form-data" class="form-editar">
-            <div class="form-group">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" value="{{ restaurant.name }}" required>
-            </div>
-            <div class="form-group">
-                <label for="web">Página Web:</label>
-                <input type="web" id="web" name="web" value="{{ restaurant.web }}" required>
-            </div>
-            <div class="form-group">
-                <label>Tipo de comida:</label>
-                <select name="food_id">
-                    {% for food in food_types %}
-                    <option value="{{ food.food_id }}" {% if food.food_id==restaurant.food_id %}selected{% endif %}>
-                        {{ food.type }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="description">Descripción:</label>
-                <textarea class="form-control" type="text" id="description" name="description"
-                    required>{{ restaurant.description }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="speciality">Especialidad:</label>
-                <textarea class="form-control" type="text" id="speciality" name="speciality"
-                    required>{{ restaurant.speciality }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="address">Dirección:</label>
-                <input type="text" id="address" name="address" value="{{ restaurant.address }}" required>
-            </div>
-            <div class="form-group">
-                <label for="capacity">Capacidad:</label>
-                <input type="number" id="capacity" name="capacity" value="{{ restaurant.capacity }}" required>
-            </div>
-            <div class="form-group">
-                <label for="phone_number">Teléfono:</label>
-                <input type="text" id="phone_number" name="phone_number" value="{{ restaurant.phone_number }}" required>
-            </div>
-            <div class="form-group">
-                <label for="img_url">Imagen del Restaurante:</label>
-                <input type="file" name="img_url" id="img_url" accept="image/*" >
-            </div>
-            <button type="submit" class="btn-submit">Guardar Cambios</button>
-        </form>
-
         <!-- Contenedor para las franjas horarias -->
         <div class="franjas-container">
             <div class="franjas-horarias">
@@ -124,6 +76,58 @@
                 </form>
             </div>
         </div> <!-- Cierre de franjas-container -->
+
+        <form method="POST" enctype="multipart/form-data" class="form-editar">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" value="{{ restaurant.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="web">Página Web:</label>
+                <input type="web" id="web" name="web" value="{{ restaurant.web }}" required>
+            </div>
+            <div class="form-group">
+                <label>Tipo de comida:</label>
+                <select name="food_id">
+                    {% for food in food_types %}
+                    <option value="{{ food.food_id }}" {% if food.food_id==restaurant.food_id %}selected{% endif %}>
+                        {{ food.type }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea class="form-control" type="text" id="description" name="description"
+                    required>{{ restaurant.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="speciality">Especialidad:</label>
+                <textarea class="form-control" type="text" id="speciality" name="speciality"
+                    required>{{ restaurant.speciality }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" id="address" name="address" value="{{ restaurant.address }}" required>
+            </div>
+            <div class="form-group">
+                <label for="capacity">Capacidad:</label>
+                <input type="number" id="capacity" name="capacity" value="{{ restaurant.capacity }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Teléfono:</label>
+                <input type="text" id="phone_number" name="phone_number" value="{{ restaurant.phone_number }}" required>
+            </div>
+            <div class="form-group">
+                <label for="img_url">Imagen del Restaurante:</label>
+                <input type="text" name="img_url" id="img_url" value="{{ restaurant.img_url }}" required>
+                <input type="file" name="img_url" id="img_url" accept="image/*">
+
+            </div>
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+        </form>
+
+        
 
     </div>
     <script src="{{url_for('static', filename='js/restaurantes/editar_restaurantes.js')}}"></script>

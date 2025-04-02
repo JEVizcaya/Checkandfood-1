@@ -275,7 +275,7 @@ def editar_restaurante():
                     filename = secure_filename(img_file.filename)
                     img_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    img_url = f'static/img/restaurantes/{filename}'  # Guardar solo la ruta relativa
+                    img_url = f'{filename}'  # Guardar solo la ruta relativa
 
             # Actualizar los datos del restaurante
             with connection.cursor() as cursor:
@@ -581,7 +581,7 @@ def restaurantes(food_id):
     
     connection=db.get_connection()
     with connection.cursor() as cursor:
-        cursor.execute("""select r.restaurant_id, r.name,r.address,r.phone_number,r.description,r.speciality from food f
+        cursor.execute("""select r.restaurant_id, r.name,r.web,r.address,r.phone_number,r.description,r.speciality from food f
             join restaurant r on f.food_id=r.food_id
             where f.type=%s""", (food_id,))
         restaurants = cursor.fetchall()
