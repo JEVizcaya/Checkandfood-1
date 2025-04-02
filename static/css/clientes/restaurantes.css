@@ -1,16 +1,28 @@
 /* Archivo: static/css/clientes/restaurantes.css */
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Main Container */
 .container {
-    width: 80%;
-    margin: 0 auto;
+    width: 95%;
+    margin: 30px auto;
     padding: 20px;
+    
+    border-radius: 8px;
+   
    
 }
 
