@@ -581,7 +581,7 @@ def restaurantes(food_id):
     
     connection=db.get_connection()
     with connection.cursor() as cursor:
-        cursor.execute("""select r.restaurant_id, r.name,r.web,r.address,r.phone_number,r.description,r.speciality from food f
+        cursor.execute("""select r.restaurant_id, r.name,r.web,r.address,r.phone_number,r.description,r.speciality,r.img_url,f.type from food f
             join restaurant r on f.food_id=r.food_id
             where f.type=%s""", (food_id,))
         restaurants = cursor.fetchall()

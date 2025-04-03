@@ -11,35 +11,38 @@
 <body>
     <div class="container">
         <nav>
-            
-            <h1>Restaurantes</h1>
-            
+            {% if restaurants %}
+            <h1>Restaurantes de comida {{ restaurants.type }}</h1>
+            {% else %}
+            <h1>No hay restaurantes disponibles</h1>
+            {% endif %}
+
             <a href="{{ url_for('tipos_comida') }}"><button type="submit">Volver</button></a>
         </nav>
         <div class="card">
             <!-- Iterar sobre la lista de restaurantes -->
             {% for restaurant in restaurants %}
-            <div class="restaurant-card restaurantes{{loop.index}}">
-                    <h2>{{ restaurant.name }}</h2>
-
-                    <!-- Sección de información de contacto -->
-
-                    <div>
-                        <p><strong>Dirección:</strong> {{ restaurant.address }}</p>
-                        <p><strong>Teléfono:</strong> {{ restaurant.phone_number }}</p>
-                        <p><strong>Web:</strong> {{ restaurant.web }}</p>
+            <div class="restaurant-card">
+                <h2>{{ restaurant.name }}</h2>
+                {% if restaurant.img_url %}
+                <img src="/static/img/restaurantes/{{restaurant.img_url }}" alt="Imagen de {{ restaurant.name }}"
+                    style="max-width: 200px;">
+                {% endif %}
+                <div>
+                    
+                    <p class="description">{{ restaurant.description }}</p>
+                    <p class="specialty"><strong>Especialidad:</strong> {{ restaurant.speciality }}</p>          
+                    <p><strong>Dirección:</strong> {{ restaurant.address }}</p>
+                    <p><strong>Teléfono:</strong> {{ restaurant.phone_number }}</p>
+                    <p><strong>Web:</strong> {{ restaurant.web }}</p>
                         
-
-                        <p class="description">{{ restaurant.description }}</p>
-                        <p class="specialty">Especialidad: {{ restaurant.speciality }}</p>
-
-                        <!-- Botón para hacer la reserva -->
-
-                        <a href="{{ url_for('hacer_reserva', restaurant_id=restaurant['restaurant_id']) }}">
-                            <button type="submit">Hacer reserva</button>
-                        </a>
-                    </div>
+                    
                 </div>
+                <a href="{{ url_for('hacer_reserva', restaurant_id=restaurant['restaurant_id']) }}">
+                    <button type="submit">Hacer reserva</button>
+                </a>
+            </div>
+
             {% endfor %}
         </div>
     </div>
