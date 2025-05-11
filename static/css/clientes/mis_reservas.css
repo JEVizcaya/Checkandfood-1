@@ -58,9 +58,10 @@ nav button:hover {
 /* Estilo para reservas canceladas */
 
 .reserva-rechazada-cancelada {
-    
-    text-decoration: line-through; /* Tacha el texto */
-    text-decoration-thickness: 5px; /* Aumenta el grosor del tachado */
+    background-color: #f8d7da; /* Fondo rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    opacity: 0.6; /* Reduce la opacidad */
+    text-decoration: none; /* Elimina el tachado */
 }
 
 .reserva-pendiente {
@@ -168,8 +169,10 @@ li.warning {
 }
 /* Estilo para reservas canceladas/rechazadas */
 .reserva-rechazada-cancelada {
-    text-decoration: line-through;
-    text-decoration-thickness: 5px;
+    background-color: #f8d7da; /* Fondo rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    opacity: 0.6; /* Reduce la opacidad */
+    text-decoration: none; /* Elimina el tachado */
 }
 
 /* Estilo para reservas pendientes */
